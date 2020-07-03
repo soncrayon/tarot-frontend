@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import {connect} from 'react-redux'
+import { fetchCards } from './actions/cardActions';
+// import CardList from './containers/cardList'
+import CardDraw from './containers/cardDraw'
+import UserReadings from './containers/userReadings'
+import DailyCards from './containers/dailyCards'
+import AppHeader from './components/appHeader'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {   
+
+  componentDidMount() {
+    this.props.fetchCards()
+  }
+  
+  render() {
+    return (
+      <div className="App">
+        <AppHeader /> 
+        <CardDraw class="CardDraw" cards={this.props.cards}/>
+        <UserReadings class="UserReadings" />
+        <DailyCards class="DailyCards"/> 
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    cards: state.cards,
+    loading: state.loading
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchCards: () => dispatch(fetchCards())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

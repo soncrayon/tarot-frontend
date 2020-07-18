@@ -3,8 +3,9 @@ import CardList from './cardList';
 
 class CardDraw extends Component {
     render(){
+
         return (
-        <div>
+        <div className="CardDraw">
             <p>Draw your cards.</p>
             <CardList cards={this.props.cards}/>
             <button>Save to Your Readings</button>

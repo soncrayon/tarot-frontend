@@ -14,7 +14,9 @@ class CardContainer extends Component {
     }
 
     reverseCard = () => {
-
+        // randomize (using 0 and 1? Math.floor?) for the drawCard function to return card_reversed instead of card_upright
+        // AND to apply a specific class to the img in the Card component to translate 180/upside down via the CSS file
+        // can set that class here on "Card" and just manipulate .Card img{} in the CSS
     }
 
     drawCard = () => {

@@ -8,7 +8,7 @@ class CardDraw extends Component {
         <div className="CardDraw">
             <p>Draw your cards.</p>
             <CardList cards={this.props.cards}/>
-            <button>Save to Your Readings</button>
+            <button>Save This Reading</button>
             <button>Refresh</button>
         </div>
         )

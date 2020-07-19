@@ -5,18 +5,18 @@ class CardList extends Component {
 
 
     render(){
+
         return (
-        
         <div>
            
             Past 
-           <CardContainer /> 
+           <CardContainer cards={this.props.cards}/> 
 
            Present
-           <CardContainer />
+           <CardContainer cards={this.props.cards}/>
 
            Future 
-           <CardContainer /> 
+           <CardContainer cards={this.props.cards}/> 
         </div>
         )
     }

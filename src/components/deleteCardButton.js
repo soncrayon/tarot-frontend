@@ -5,12 +5,11 @@ import React from 'react'
 
 
 
-export const DrawCardButton = props => {
+export const DeleteCardButton = (props) => {
     return (
         <div>
-            <button onClick={props.drawCard}>Draw Card</button>
+            <button>Delete Card</button>
         </div>
     )
 }
-
 

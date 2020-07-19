@@ -48,6 +48,11 @@ img {
   justify-content: space-around;
 }
 
+.CardContainer button {
+  width: 6rem;
+  height: 2rem;
+}
+
 .UserReadings {
   width: 45%;
   height: 100%;

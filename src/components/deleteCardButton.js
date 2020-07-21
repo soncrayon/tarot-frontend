@@ -8,7 +8,7 @@ import React from 'react'
 export const DeleteCardButton = (props) => {
     return (
         <div>
-            <button>Delete Card</button>
+            <button onClick={props.deleteCard}>Delete Card</button>
         </div>
     )
 }

@@ -7,6 +7,8 @@ export const Card = props => {
                 <img src={props.card.card_image} alt='card'></img> 
                 <h4>Description:</h4>
                 <p>{props.card.card_full_meaning}</p>
+                <h4>Card Orientation is UPRIGHT, that indicates:</h4>
+                <p>{props.card.card_upright}</p>
             </div>
         ) 
   

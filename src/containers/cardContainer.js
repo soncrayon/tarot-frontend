@@ -30,6 +30,15 @@ class CardContainer extends Component {
         })
     }
 
+    deleteCard = () => {
+        return this.setState({
+            card_name: '',
+            card_full_meaning: '',
+            card_upright: '',
+            card_image: ''
+        })
+    }
+
     render(){
         return (
             <div className="CardContainer">
@@ -38,10 +47,12 @@ class CardContainer extends Component {
                 <DrawCardButton drawCard={this.drawCard}/> 
                 {/* Below is the delete card button but also need to make sure that the above card draw button
                 deletes the card if there is already a card present and replaces it with another (maybe a put or patch function) */}
-                <DeleteCardButton />
+                <DeleteCardButton deleteCard={this.deleteCard} />
             </div>
         )
     }
 }
 
 export default CardContainer
+
+// stretch goal--move the draw functionality out of the card container component and have one button that populates each 

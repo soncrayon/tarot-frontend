@@ -10,23 +10,25 @@ class CardContainer extends Component {
         card_full_meaning: '',
         card_upright: '',
         card_reversed: '',
-        card_image: ''
+        card_image: '',
+        card_orientation: ''
     }
 
-    reverseCard = () => {
-        // randomize (using 0 and 1? Math.floor?) for the drawCard function to return card_reversed instead of card_upright
-        // AND to apply a specific class to the img in the Card component to translate 180/upside down via the CSS file
-        // can set that class here on "Card" and just manipulate .Card img{} in the CSS
+    getCardOrientation = () => {
+        return ['upright', 'reversed'][Math.round(Math.random())]
     }
 
     drawCard = () => {
         let drawnCard = this.props.cards[Math.floor(Math.random() * this.props.cards.length)]
+        let cardOrientation = this.getCardOrientation()
         return this.setState({
             ...this.state,
             card_name: drawnCard.name,
             card_full_meaning: drawnCard.full_meaning,
             card_upright: drawnCard.upright,
-            card_image: drawnCard.image
+            card_reversed: drawnCard.reversed,
+            card_image: drawnCard.image,
+            card_orientation: cardOrientation
         })
     }
 
@@ -35,7 +37,8 @@ class CardContainer extends Component {
             card_name: '',
             card_full_meaning: '',
             card_upright: '',
-            card_image: ''
+            card_image: '',
+            card_orientation: ''
         })
     }
 
@@ -43,7 +46,7 @@ class CardContainer extends Component {
         return (
             <div className="CardContainer">
                 {/* To get the card to flip, need to set a class on the CardImage component and change with the drawCard function or helper function -- reverseCard */}
-                <Card card={this.state}/>
+                <Card card={this.state} />
                 <DrawCardButton drawCard={this.drawCard}/> 
                 {/* Below is the delete card button but also need to make sure that the above card draw button
                 deletes the card if there is already a card present and replaces it with another (maybe a put or patch function) */}

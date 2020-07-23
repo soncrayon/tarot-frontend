@@ -9,13 +9,16 @@ class CardList extends Component {
         return (
         <div>
            
-            Past 
+            <h2>Past</h2> 
+            <br></br>
            <CardContainer cards={this.props.cards}/> 
 
-           Present
+           <h2>Present</h2>
+           <br></br>
            <CardContainer cards={this.props.cards}/>
 
-           Future 
+           <h2>Future</h2> 
+           <br></br>
            <CardContainer cards={this.props.cards}/> 
         </div>
         )

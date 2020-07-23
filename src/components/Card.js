@@ -16,7 +16,7 @@ export const Card = props => {
             return (
                 <div>
                     <h3>{props.card.card_name}</h3>
-                    <img className="reversed" src={props.card.card_image} alt='card'></img> 
+                    <img className="reversed" style={{transform: 'rotate(180deg)'}} src={props.card.card_image} alt='card'></img> 
                     <h4>Description:</h4>
                     <p>{props.card.card_full_meaning}</p>
                     <h4>Card Orientation is REVERSED, that indicates:</h4>

@@ -10,14 +10,38 @@ html, body {
   width: 100vw;
 }
 
+nav {
+  background-color: teal;
+  height: 3rem; 
+  display: flex;
+  align-items: center;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+nav a {
+  text-decoration: none;
+  color: white; 
+}
+
+nav a:hover {
+  color: black;
+}
+
 img {
   height: 10rem;
   width: 7rem;
 }
 
-.reversed {
+/* .reversed {
   transform: rotate(180deg);
-}
+} */
 
 .App {
   height: 100vh;
@@ -50,6 +74,9 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  background-color: wheat;
+  margin-bottom: 2rem;
+  padding: 2rem; 
 }
 
 .CardContainer button {

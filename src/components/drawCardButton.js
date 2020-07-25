@@ -8,7 +8,7 @@ import React from 'react'
 export const DrawCardButton = props => {
     return (
         <div>
-            <button onClick={props.drawCard}>Draw Card</button>
+            <button onClick={() => props.drawCard(props.period)}>Draw Card</button>
         </div>
     )
 }

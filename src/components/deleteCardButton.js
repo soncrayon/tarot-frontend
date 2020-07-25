@@ -5,10 +5,10 @@ import React from 'react'
 
 
 
-export const DeleteCardButton = (props) => {
+export const DeleteCardButton = props => {
     return (
         <div>
-            <button onClick={props.deleteCard}>Delete Card</button>
+            <button onClick={() => props.deleteCard(props.period)}>Delete Card</button>
         </div>
     )
 }

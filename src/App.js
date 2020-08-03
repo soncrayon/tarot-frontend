@@ -4,6 +4,8 @@ import CardDrawAndReadingDisplay from './containers/cardDrawAndReadingDisplay'
 // import DailyCards from './containers/dailyCards'
 import UserReadings from './containers/userReadings'
 import { fetchCards } from './actions/cardActions'
+import { postReading } from './actions/cardActions'
+
 
 
 import AppHeader from './components/appHeader'
@@ -61,7 +63,7 @@ class App extends Component {
           
           <Route path="/">
             <AppHeader /> 
-            <CardDrawAndReadingDisplay cards={this.props.cards} /> 
+            <CardDrawAndReadingDisplay cards={this.props.cards} postReading={this.props.postReading} deleteCard={this.deleteCard}/> 
             {/* <DailyCards />  */}
           </Route>
 
@@ -81,6 +83,10 @@ const mapStateToProps = state => {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  fetchCards: () => dispatch(fetchCards()),
+  postReading: readingObject => dispatch(postReading(readingObject)),
+})
 
 
-export default connect(mapStateToProps, {fetchCards})(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

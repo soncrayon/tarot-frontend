@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import CardDrawAndReadingDisplay from './containers/cardDrawAndReadingDisplay'
 // import DailyCards from './containers/dailyCards'
 import UserReadings from './containers/userReadings'
-import { fetchCards } from './actions/cardActions'
+import { fetchCards, fetchReadings } from './actions/cardActions'
 import { postReading } from './actions/cardActions'
 
 
@@ -20,6 +20,7 @@ class App extends Component {
   
   componentDidMount (){
     this.props.fetchCards()
+    this.props.fetchReadings()
   }
   
   render() {
@@ -58,12 +59,12 @@ class App extends Component {
           </Route>
 
           <Route path="/user_readings">
-            <UserReadings />          
+            <UserReadings readings={this.props.readings.readings}/>          
           </Route>
           
           <Route path="/">
             <AppHeader /> 
-            <CardDrawAndReadingDisplay cards={this.props.cards} postReading={this.props.postReading} deleteCard={this.deleteCard}/> 
+            <CardDrawAndReadingDisplay cards={this.props.cards.cards} postReading={this.props.postReading} deleteCard={this.deleteCard}/> 
             {/* <DailyCards />  */}
           </Route>
 
@@ -79,12 +80,15 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     cards: state.cards,
+
+    readings: state.readings,
     loading: state.loading
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   fetchCards: () => dispatch(fetchCards()),
+  fetchReadings: () => dispatch(fetchReadings()), 
   postReading: readingObject => dispatch(postReading(readingObject)),
 })
 

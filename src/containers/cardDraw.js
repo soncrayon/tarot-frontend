@@ -167,6 +167,10 @@ class CardDraw extends Component {
     clearAllCards = () => {
         this.setState(this.initialState)
     }
+
+    successfulSubmit = () => {
+        alert('You have successfully submitted your reading.  Click readings in the menu to view.')
+    }
     
     render(){
 
@@ -187,8 +191,16 @@ class CardDraw extends Component {
            <br></br>
            <CardContainer card={this.state.reading.future} drawCard={this.drawCard} deleteCard={this.deleteCard}/> 
 
-            <button onClick={() => {this.props.postReading(this.state.reading)}}>Save This Reading</button>
-            
+            <button onClick={
+                
+                async ()=> {
+                await this.props.postReading(this.state.reading)
+                this.clearAllCards()
+                this.successfulSubmit()
+                } 
+                
+            }>Save This Reading</button>
+
             <button onClick={this.clearAllCards}>Refresh</button>
         </div>
         )

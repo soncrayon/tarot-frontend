@@ -1,17 +1,17 @@
-const cardsReducer = (state = {cards: [], loading:false}, action) => {
+const readings = (state = {readings: [], loading:false}, action) => {
     switch (action.type) {
        
-        case 'LOADING_CARDS':
+        case 'LOADING_READINGS':
             return {
                 ...state, 
-                cards: [...state.cards],
+                readings: [...state.readings],
                 loading:true
             }
         
-        case 'ADD_CARDS':
+        case 'ADD_READINGS':
            return {
                 ...state,
-                cards: action.cards,
+                readings: action.readings,
                 loading:false
             }
 
@@ -21,4 +21,4 @@ const cardsReducer = (state = {cards: [], loading:false}, action) => {
 
 }
 
-export default cardsReducer 
+export default readings

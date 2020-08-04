@@ -29,11 +29,11 @@ export const postReading = (readingObj) => {
 
 export const fetchReadings = () => {
     return (dispatch) => {
-        dispatch({type:'LOADING_CARDS'});
+        dispatch({type:'LOADING_READINGS'});
         fetch('http://localhost:3000/readings')
             .then(resp => resp.json())
             .then(readingsObj => {
-                dispatch({type:''})
+                dispatch({type:'ADD_READINGS', readings: readingsObj})
             })
     }
 }

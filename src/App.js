@@ -5,6 +5,7 @@ import CardDrawAndReadingDisplay from './containers/cardDrawAndReadingDisplay'
 import UserReadings from './containers/userReadings'
 import { fetchCards, fetchReadings } from './actions/cardActions'
 import { postReading } from './actions/cardActions'
+import HomePage from './components/homePage';
 
 
 
@@ -29,11 +30,14 @@ class App extends Component {
        
 
       <Router>
-      <div>
+      <div className="top_level">
         <nav>
           <ul>
             <li>
               <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/tarot_board">Tarot Board</Link>
             </li>
             <li>
               <Link to="/about">About</Link>
@@ -62,10 +66,13 @@ class App extends Component {
             <UserReadings readings={this.props.readings.readings}/>          
           </Route>
           
-          <Route path="/">
+          <Route path="/tarot_board">
             <AppHeader /> 
             <CardDrawAndReadingDisplay cards={this.props.cards.cards} postReading={this.props.postReading} deleteCard={this.deleteCard}/> 
-            {/* <DailyCards />  */}
+          </Route>
+{/* need to move the below out of the overall router.  Look up how to build a welcome page. */}
+          <Route path="/">
+            <HomePage /> 
           </Route>
 
         </Switch>
@@ -80,7 +87,6 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     cards: state.cards,
-
     readings: state.readings,
     loading: state.loading
   }

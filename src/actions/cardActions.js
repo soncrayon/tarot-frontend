@@ -15,7 +15,7 @@ export const fetchCards = () => {
 export const postReading = (readingObj) => { 
     return (dispatch) => {
         dispatch({type:'LOADING_CARDS'});
-        fetch('http://localhost:3000/cards', {
+        fetch('http://localhost:3001/cards', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -30,7 +30,7 @@ export const postReading = (readingObj) => {
 export const fetchReadings = () => {
     return (dispatch) => {
         dispatch({type:'LOADING_READINGS'});
-        fetch('http://localhost:3000/readings')
+        fetch('http://localhost:3001/readings')
             .then(resp => resp.json())
             .then(readingsObj => {
                 dispatch({type:'ADD_READINGS', readings: readingsObj})

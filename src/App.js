@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import axios from 'axios'
 import CardDrawAndReadingDisplay from './containers/cardDrawAndReadingDisplay'
-// import DailyCards from './containers/dailyCards'
 import UserReadings from './containers/userReadings'
 import { fetchCards, fetchReadings } from './actions/cardActions'
 import { postReading } from './actions/cardActions'
-import HomePage from './components/homePage';
+import LoginPage from './components/loginPage';
+import Signup from './components/signupPage'
+import About from './components/About'
 
-
+// is there a way to change the url and browser tab title to match the app? 
 
 import AppHeader from './components/appHeader'
 import {
@@ -17,68 +19,124 @@ import {
   Link
 } from "react-router-dom"
 
+
 class App extends Component {   
   
+  // How does adding this constructor affect the work the reducer is doing? app state? 
+  constructor(props) {
+    super(props);
+    this.state = { 
+      isLoggedIn: false,
+      user: {}
+     };
+  }
+
   componentDidMount (){
+    this.loginStatus() 
     this.props.fetchCards()
     this.props.fetchReadings()
   }
+
+  handleLogin = (data) => {
+    this.setState({
+      isLoggedIn: true,
+      user: data.user
+    })
+  }
+
+  handleLogout = () => {
+      this.setState({
+      isLoggedIn: false,
+      user: {}
+      })
+
+    axios.delete('http://localhost:3001/logout', {withCredentials: true})
+    .then(response => {
+      console.log()
+    })
+    .catch(error => console.log(error))
+    }
+
+    loginStatus = () => {
+      axios.get('http://localhost:3001/logged_in', 
+     {withCredentials: true})
+      .then(response => {
+        if (response.data.logged_in) {
+          this.handleLogin(response)
+        } else {
+          this.handleLogout()
+        }
+      })
+      .catch(error => console.log('api errors:', error))
+    }
+
+    redirectToLogin = () => {
+      this.props.history.push('/')
+    }
   
   render() {
     return (
       <div className="App">
-       
+      <div className="top_level">
 
       <Router>
-      <div className="top_level">
+
+      
         <nav>
           <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/tarot_board">Tarot Board</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/card_for_the_month">Card of the Month</Link>
-            </li>
-            <li>
-              <Link to="/user_readings">User Readings</Link>
-            </li>
+            <li> <Link to="create_account">Create Account</Link></li>
+            <li> <Link to="/home">Home</Link> </li>
+            <li> <Link to="/about">About</Link> </li>
+            <li> <Link to="/user_readings">User Readings</Link> </li>
+            <li> <Link to="/" onClick={this.handleLogout}>Logout</Link> </li>
           </ul>
         </nav>
+   
 
        
         <Switch>
-
-          <Route path="/about">
-            <p>Here's some random about text. About component will go here.</p>
+   
+        <Route path="/home">
+            <AppHeader first_name={this.state.user.first_name}/> 
+            <CardDrawAndReadingDisplay 
+            cards={this.props.cards.cards} 
+            postReading={this.props.postReading} 
+            deleteCard={this.deleteCard}
+            loggedInStatus={this.state.isLoggedIn}
+            /> 
+          </Route>  
+          
+        <Route path="/about">
+            <About 
+            loggedInStatus={this.state.isLoggedIn}
+            /> 
           </Route>
-
-          <Route path="/card_for_the_month">
-            <p>I will put the card for the month here. Probably drawn at random. Card of Month component here.</p>
-          </Route>
-
-          <Route path="/user_readings">
-            <UserReadings readings={this.props.readings.readings}/>          
+        
+        <Route path="/user_readings">
+            <UserReadings 
+            readings={this.props.readings.readings}
+            loggedInStatus={this.state.isLoggedIn}
+            />          
           </Route>
           
-          <Route path="/tarot_board">
-            <AppHeader /> 
-            <CardDrawAndReadingDisplay cards={this.props.cards.cards} postReading={this.props.postReading} deleteCard={this.deleteCard}/> 
+          <Route path="/create_account">
+            <Signup 
+            handleLogin={this.handleLogin}
+            /> 
           </Route>
-{/* need to move the below out of the overall router.  Look up how to build a welcome page. */}
+
           <Route path="/">
-            <HomePage /> 
+            <LoginPage 
+            handleLogin={this.handleLogin}
+            /> 
           </Route>
 
         </Switch>
-      </div>
+    
     </Router>
-      </div>
+
+    </div>
+  </div>
       
     );
   }

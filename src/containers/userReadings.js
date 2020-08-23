@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import Reading from './Reading'
+import { withRouter } from 'react-router-dom'
 
 class UserReadings extends Component {
+
+    redirectToLogin = () => {
+        this.props.history.push('/')
+    }
     
+    componentWillMount(){
+        return this.props.loggedInStatus ? null : this.redirectToLogin()
+    }
+
     render(){
         return (
             <div className="UserReadings">
@@ -16,4 +25,4 @@ class UserReadings extends Component {
     }
 }
 
-export default UserReadings
+export default withRouter(UserReadings)

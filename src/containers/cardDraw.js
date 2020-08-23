@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CardContainer from './cardContainer'
 import { getCardOrientation } from '../actions/getCardOrientation'
+import SessionCard from '../components/sessionCard'
 
 
 // STATUS 1AUG2020 -- Need to figure out how to post a card with all attributes to the backend and return the Id to state so 
@@ -176,9 +177,12 @@ class CardDraw extends Component {
 
         return (
         <div className="CardDraw">
-            <p>Draw your cards.</p>
+            <p>First, draw the governing card for your session.</p>
             
+            <SessionCard card={this.state.reading.past} drawCard={this.drawCard} deleteCard={this.deleteCard}/> 
 
+            <p>Draw your cards.</p>
+        
             <h2>Past</h2> 
             <br></br>
            <CardContainer card={this.state.reading.past} drawCard={this.drawCard} deleteCard={this.deleteCard}/> 

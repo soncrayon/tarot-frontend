@@ -7,7 +7,7 @@ class LoginPage extends Component {
     state = {
         email:'',
         password:'',    
-        errors:''
+        errors:'',
     }
 
     validateForm = () => {
@@ -25,6 +25,7 @@ class LoginPage extends Component {
         axios.post('http://localhost:3001/login', {user}, {withCredentials: true})
             .then(response => {
               if (response.data.logged_in) {
+                console.log(response)
                 this.props.handleLogin(response.data)
                 this.redirectToApp()
               } else {
@@ -46,12 +47,11 @@ class LoginPage extends Component {
     }
 
     redirectToApp = () => {
-      debugger 
-        this.props.history.push('/home')
+        this.props.history.push("/home");
     }
 
     redirectToSignup = () => {
-        this.props.history.push('/create_account')
+        this.props.history.push("/create_account"); 
     }
 
     handleErrors = () => {

@@ -1,33 +1,25 @@
 import React, { Component } from 'react';
 import CardContainer from './cardContainer'
 import { getCardOrientation } from '../actions/getCardOrientation'
-import SessionCard from '../components/sessionCard'
-
-
-// STATUS 1AUG2020 -- Need to figure out how to post a card with all attributes to the backend and return the Id to state so 
-// that if a user decides to delete it, the id can pass back to the backend. 
-// need to figure out how to associate a reading once all three cards are drawn
-// set error boundary for less than 3 cards drawn--only execute reading function if a condition of three cards being in
-// state is satisfied and display an error message otherwise "You must choose all three cards"
 
 class CardDraw extends Component {
     
    constructor (props) {
     super(props);
     this.state = this.initialState;
-    // this.drawnCardIds = [];
    }
 
    get initialState() {
 
         let cardAttributes = {
-            card_name: '', 
-            card_full_meaning: '',
-            card_upright: '',
-            card_image: '',
-            card_orientation: '',
-            card_id: '',
-            reading_id: ''
+            name: '', 
+            full_meaning: '',
+            upright_meaning: '',
+            image: '',
+            orientation: '',
+            id: '',
+            reading_id: '',
+            user_id:''
         }
        return {
            reading: {
@@ -48,17 +40,6 @@ class CardDraw extends Component {
             }
        }
    }
-
-//    addCardToBackend = (period) => { 
-//     switch (period) {
-//         case 'past': return this.props.addCard(this.state.reading.past)
-//         case 'present': return this.props.addCard(this.state.reading.present)
-//         case 'future': return this.props.addCard(this.state.reading.future)
-//         default: return this.state
-//     }
-    
-    
-//    }
 
    updateStateWithDrawnCard = (newCardAtrributes) => {
     if (newCardAtrributes.period === 'past') {
@@ -95,14 +76,15 @@ class CardDraw extends Component {
    setCardAttributes = (drawnCard, period) => {
        let newCardAtrributes = {
         period: period, 
-        card_name: drawnCard.name,
-        card_full_meaning: drawnCard.full_meaning,
-        card_upright: drawnCard.upright,
-        card_reversed: drawnCard.reversed,
-        card_image: drawnCard.image,
-        card_orientation: this.setCardOrientation(),
-        card_id: drawnCard.id,
-        reading_id: ''
+        name: drawnCard.name,
+        full_meaning: drawnCard.full_meaning,
+        upright_meaning: drawnCard.upright,
+        reversed_meaning: drawnCard.reversed,
+        image: drawnCard.image,
+        orientation: this.setCardOrientation(),
+        id: drawnCard.id,
+        reading_id: '',
+        user_id: this.props.user.id
      }
      this.updateStateWithDrawnCard(newCardAtrributes)
    }
@@ -116,11 +98,10 @@ class CardDraw extends Component {
         let drawnCard
 
         let drawnCardIds = Object.entries(this.state.reading).map(([period, value]) => {
-            return value.card_id
+            return value.id
         })
     
         do {
-            console.log(drawnCardIds)
             drawnCard = this.props.cards[Math.floor(Math.random() * this.props.cards.length)]
         } while (drawnCardIds.indexOf(drawnCard.id) !== -1)
         return drawnCard
@@ -176,10 +157,7 @@ class CardDraw extends Component {
     render(){
 
         return (
-        <div className="CardDraw">
-            <p>First, draw the governing card for your session.</p>
-            
-            <SessionCard card={this.state.reading.past} drawCard={this.drawCard} deleteCard={this.deleteCard}/> 
+        <div className="CardDraw">            
 
             <p>Draw your cards.</p>
         

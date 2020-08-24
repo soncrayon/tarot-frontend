@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios'
-import CardDrawAndReadingDisplay from './containers/cardDrawAndReadingDisplay'
 import UserReadings from './containers/userReadings'
-import { fetchCards, fetchReadings } from './actions/cardActions'
-import { postReading } from './actions/cardActions'
+import { fetchCards } from './actions/cardActions'
+import { fetchReadings , postReading } from './actions/readingActions'
 import LoginPage from './components/loginPage';
 import Signup from './components/signupPage'
 import About from './components/About'
-
-// is there a way to change the url and browser tab title to match the app? 
-
-import AppHeader from './components/appHeader'
+import Home from './containers/home'
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,19 +18,12 @@ import {
 
 class App extends Component {   
   
-  // How does adding this constructor affect the work the reducer is doing? app state? 
   constructor(props) {
     super(props);
     this.state = { 
       isLoggedIn: false,
       user: {}
      };
-  }
-
-  componentDidMount (){
-    this.loginStatus() 
-    this.props.fetchCards()
-    this.props.fetchReadings()
   }
 
   handleLogin = (data) => {
@@ -73,70 +62,95 @@ class App extends Component {
     redirectToLogin = () => {
       this.props.history.push('/')
     }
-  
+   
+  componentDidMount (){
+      this.loginStatus() 
+      this.props.fetchCards()
+      this.props.fetchReadings()
+    }
+
   render() {
     return (
-      <div className="App">
       <div className="top_level">
 
-      <Router>
+    <Router>
 
-      
+      <div className="App">
+   
         <nav>
           <ul>
-            <li> <Link to="create_account">Create Account</Link></li>
             <li> <Link to="/home">Home</Link> </li>
             <li> <Link to="/about">About</Link> </li>
             <li> <Link to="/user_readings">User Readings</Link> </li>
             <li> <Link to="/" onClick={this.handleLogout}>Logout</Link> </li>
           </ul>
         </nav>
-   
-
        
         <Switch>
-   
-        <Route path="/home">
-            <AppHeader first_name={this.state.user.first_name}/> 
-            <CardDrawAndReadingDisplay 
-            cards={this.props.cards.cards} 
-            postReading={this.props.postReading} 
-            deleteCard={this.deleteCard}
-            loggedInStatus={this.state.isLoggedIn}
-            /> 
-          </Route>  
-          
-        <Route path="/about">
+    
+          <Route
+          path='/about'
+          render={(props) => (
             <About 
-            loggedInStatus={this.state.isLoggedIn}
-            /> 
-          </Route>
-        
-        <Route path="/user_readings">
-            <UserReadings 
-            readings={this.props.readings.readings}
-            loggedInStatus={this.state.isLoggedIn}
-            />          
-          </Route>
+              {...props}
+              loggedInStatus={this.state.isLoggedIn}
+            />
+          )}
+          />
           
-          <Route path="/create_account">
+          <Route
+          path='/home'
+          render={(props) => (
+            <Home 
+              {...props}
+              user={this.state.user}
+              cards={this.props.cards.cards} 
+              postReading={this.props.postReading} 
+              deleteCard={this.deleteCard}
+              loggedInStatus={this.state.isLoggedIn}
+            />
+          )}
+          />
+          
+          <Route
+          path='/user_readings'
+          render={(props) => (
+            <UserReadings 
+              {...props}
+              user={this.state.user}
+              fetchReadings = {this.props.fetchReadings}
+              readings={this.props.readings.readings}
+              loggedInStatus={this.state.isLoggedIn}
+            />
+          )}
+          />
+          
+          <Route
+          path='/create_account'
+          render={(props) => (
             <Signup 
-            handleLogin={this.handleLogin}
-            /> 
-          </Route>
+              {...props}
+              handleLogin={this.handleLogin}
+            />
+          )}
+          />
 
-          <Route path="/">
+          <Route
+          path='/'
+          render={(props) => (
             <LoginPage 
-            handleLogin={this.handleLogin}
-            /> 
-          </Route>
+              {...props}
+              handleLogin={this.handleLogin}
+            />
+          )}
+          />
 
         </Switch>
-    
+
+        </div>
     </Router>
 
     </div>
-  </div>
       
     );
   }

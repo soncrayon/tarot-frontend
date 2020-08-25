@@ -13,10 +13,10 @@ class Reading extends Component {
 
     render(){
         return (
-            <div className="">
-                {/* reset the database so readings with no date are purged and then remove the or operator below */}
-                <button onClick={() => this.showReading()}>View</button>
-                <p>{this.props.reading.date || "No date for this one"}</p>
+            <div className="reading_thumbnail">
+                <button onClick={() => this.showReading()}>{this.props.reading.date_time_created}</button>
+                <br></br>
+                <img src={this.props.reading.cards[0].image} alt="reading_pic"></img>
             </div>
         )
     }

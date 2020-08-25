@@ -70,6 +70,8 @@ class CardDraw extends Component {
 }
 
    setCardOrientation = () => {
+    //    do I need this function at all -- can I just rely on getCardOrientation in the below set attributes 
+    // since a value is being returned from that function??? 
     return getCardOrientation()
     }
    
@@ -158,7 +160,7 @@ class CardDraw extends Component {
 
         return (
         <div className="CardDraw">            
-
+            <div className="card_row">
             <p>Draw your cards.</p>
         
             <h2>Past</h2> 
@@ -172,11 +174,14 @@ class CardDraw extends Component {
            <h2>Future</h2> 
            <br></br>
            <CardContainer card={this.state.reading.future} drawCard={this.drawCard} deleteCard={this.deleteCard}/> 
+           </div>
+           <div className="game_functions">
 
             <button onClick={
                 
                 async ()=> {
                 await this.props.postReading(this.state.reading)
+                this.props.fetchReadings()
                 this.clearAllCards()
                 this.successfulSubmit()
                 } 
@@ -184,9 +189,18 @@ class CardDraw extends Component {
             }>Save This Reading</button>
 
             <button onClick={this.clearAllCards}>Refresh</button>
+            </div>
         </div>
         )
     }
 }
 
 export default CardDraw
+
+// the submit reading click needs to set off a cascade of functions:
+// first needs to validate thate there is actually data in the past, present, future keys (!== ''  or something similar)
+// (on the above point, can I replace the empty strings with null -- then use that to verify)
+// if that conditions is satisfied then post the reading
+// await post reading, then fetch readings (throw a console log or debugger in fetch readings in reading actions to make sure it's being hit every time)
+// await fetch readings, then post successful submit
+// then clear all cards 

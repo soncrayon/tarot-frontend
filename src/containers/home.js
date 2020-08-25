@@ -25,6 +25,7 @@ class Home extends Component {
                 user={this.props.user}
                 cards={this.props.cards} 
                 postReading={this.props.postReading} 
+                fetchReadings={this.props.fetchReadings}
                 deleteCard={this.props.deleteCard}
                 loggedInStatus={this.props.loggedInStatus}
                 /> 

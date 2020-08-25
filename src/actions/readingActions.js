@@ -18,8 +18,8 @@ export const fetchReadings = () => {
         dispatch({type:'LOADING_READINGS'});
         fetch('http://localhost:3001/readings')
             .then(resp => resp.json())
-            .then(readingsObj => {
-                dispatch({type:'ADD_READINGS', readings: readingsObj})
+            .then(readingsJSONResponse => { 
+                dispatch({type:'ADD_READINGS', readings: readingsJSONResponse})
             })
     }
 }

@@ -106,6 +106,7 @@ class App extends Component {
               user={this.state.user}
               cards={this.props.cards.cards} 
               postReading={this.props.postReading} 
+              fetchReadings={this.props.fetchReadings}
               deleteCard={this.deleteCard}
               loggedInStatus={this.state.isLoggedIn}
             />
@@ -118,7 +119,6 @@ class App extends Component {
             <UserReadings 
               {...props}
               user={this.state.user}
-              fetchReadings = {this.props.fetchReadings}
               readings={this.props.readings.readings}
               loggedInStatus={this.state.isLoggedIn}
             />

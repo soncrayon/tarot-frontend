@@ -11,6 +11,7 @@ class CardDrawAndReadingDisplay extends Component {
                 user={this.props.user}
                 cards={this.props.cards} 
                 postReading={this.props.postReading} 
+                fetchReadings={this.props.fetchReadings}
                 addCard={this.props.addCard} 
                 deleteCard={this.props.deleteCard}/>
             </div>

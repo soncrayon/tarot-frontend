@@ -36,7 +36,7 @@ html, body {
 }
 
 .credential_background::after {
-  background-image: url('chirag-k-Pg2jm-PMVWs-unsplash.jpg');
+  background-image: url('art-deco-black-elisabeth-fredriksson.jpg');
   content: ' ';
   display: block;
   position: absolute;
@@ -45,7 +45,7 @@ html, body {
   width: 100%;
   height: 100%;
   z-index: 1;
-  opacity: 0.6;
+  opacity: 0.25;
   background-repeat: no-repeat;
   background-position: 50% 0;
   -ms-background-size: cover;
@@ -57,15 +57,17 @@ html, body {
 
 .main_title {
   text-align: center;
-  font-size: 10rem;
+  font-size: 12rem;
   padding: 0;
   margin: 0; 
+  z-index: 2;
 }
 
 .subtitle {
   text-align: center;
   margin-top: 0;
   font-size: 1.8rem;
+  z-index: 2;
 }
 
 .login_form {
@@ -143,8 +145,10 @@ nav a:hover {
 }
 
 img {
-  height: 10rem;
-  width: 7rem;
+  height: 30rem;
+  width: 18rem;
+  border-radius: 1rem;
+  box-shadow: 0.5rem 0.5rem 0.25rem gray;
 }
 
 /* .reversed {
@@ -182,12 +186,26 @@ img {
   width: 70%;
   height: 100%;
   padding: 2%; 
+  display: flex;
+  flex-direction: column;
 
+}
+
+.card_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.game_functions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .CardContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   background-color:lightgray;
   margin-bottom: 2rem;
@@ -204,4 +222,16 @@ img {
   height: 100%;
   padding: 2%; 
 }
+
+.about_text {
+  padding: 2rem; 
+}
+
+.card_back img {
+  height: 30rem;
+  width: 18rem;
+  border-radius: 1rem;
+  box-shadow: 0.5rem 0.5rem 0.25rem gray;
+}
+
 

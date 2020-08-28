@@ -1,45 +1,52 @@
-import React from 'react'
+import React, { Component } from 'react'
+import ReactCardFlip from 'react-card-flip';
+import CardBack from './cardBack'
+import CardFront from './cardFront'
 
-export const Card = props => {
-        if (props.card.orientation === 'upright'){
-            return (
-                <div className="card_front">
-                    <div className="card_title">
-                        <h3>{props.card.name}</h3>
-                    </div>
-                    <div>
-                    <img className="upright" src={props.card.image} alt='card'></img> 
-                    {/* <h4>Description:</h4>
-                    <p>{props.card.full_meaning}</p>
-                    <h4>Card Orientation is UPRIGHT, that indicates:</h4>
-                    <p>{props.card.upright_meaning}</p> */}
-                    </div> 
-                </div>
-            ) 
-        } else if (props.card.orientation === 'reversed') {
-            return (
-                <div className="card_front">
-                    <div className="card_title">
-                        <h3>{props.card.name}</h3>
-                    </div>
-                    <div>
-                    <img className="reversed" style={{transform: 'rotate(180deg)'}} src={props.card.image} alt='card'></img> 
-                    {/* <h4>Description:</h4>
-                    <p>{props.card.full_meaning}</p>
-                    <h4>Card Orientation is REVERSED, that indicates:</h4>
-                    <p>{props.card.reversed_meaning}</p> */}
-                    </div>
-                </div>
-            )
-        } 
+class Card extends Component {
+
+    constructor(props){
+        super(props)
+        this.state = {
+        isFlipped: true 
+        }
+    }
+
+    drawOrDeleteCard = (period, card_position) => {
+        if (card_position === "card_back"){
+            return this.props.drawCard(period)
+         }
+         return this.props.deleteCard(period)
+    }
+
+    handleClick = (period, card_position) => () => {
+        this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
+        this.drawOrDeleteCard(period, card_position)
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.card_refresh !== this.props.card_refresh){
+            this.setState({isFlipped: true})
+        }
+    }
+
+    render(){
+
         return (
-           <div className="card_back"> 
-               {/* look up how to set image source in react app -- this is not rendering */}
-               <img src='/art-deco-black-elisabeth-fredriksson.jpg' alt="card back art"></img>
-           </div>
+        <ReactCardFlip 
+        isFlipped={this.state.isFlipped} 
+        flipDirection="horizontal" 
+        > 
+            <CardFront handleClick={this.handleClick} card={this.props.card}/>
+    
+            <CardBack handleClick={this.handleClick} card={this.props.card}/>
+          
+        </ReactCardFlip>
         )
+    }     
        
-     
 }
 
-// revise this to take advantage of switch/case since I'm using more than two 
+export default Card 
+
+

@@ -1,3 +1,8 @@
+// 25AUG2020 -- need to spend some time figuring out whether any of this code can be extracted out into separate components
+// This is a very long containiner component. 
+
+// click even on any card only changes the last one. 
+
 import React, { Component } from 'react';
 import CardContainer from './cardContainer'
 import { getCardOrientation } from '../actions/getCardOrientation'
@@ -37,7 +42,8 @@ class CardDraw extends Component {
                     period: 'future',
                     ...cardAttributes
                 }
-            }
+            },
+            card_refresh: false
        }
    }
 
@@ -120,7 +126,7 @@ class CardDraw extends Component {
                 reading: {
                     ...this.state.reading, 
                     past: this.initialState.reading.past
-                }
+                },
             })
 
             case 'present':
@@ -130,7 +136,7 @@ class CardDraw extends Component {
                 reading: {
                     ...this.state.reading, 
                     present: this.initialState.reading.present
-                }
+                },
             })
 
             case 'future':
@@ -140,67 +146,85 @@ class CardDraw extends Component {
                 reading: {
                     ...this.state.reading, 
                     future: this.initialState.reading.future
-                }
+                },
             })
 
             default: return this.state
         }
-       
     }
 
     clearAllCards = () => {
-        this.setState(this.initialState)
+        this.setState({...this.initialState, card_refresh: prevState => !prevState.card_refresh})
     }
 
     successfulSubmit = () => {
         alert('You have successfully submitted your reading.  Click readings in the menu to view.')
     }
-    
+
+    updateStateWithNewReading = () => {
+        this.setState(this.props.fetchReadings())
+    }
+
+    updateAppAfterReadingSubmission = () => {
+        this.clearAllCards()
+        this.successfulSubmit()
+        this.updateStateWithNewReading()
+    }
+
+    saveReading = async () => {
+        await this.props.postReading(this.state.reading)
+        this.updateAppAfterReadingSubmission()
+    }
+  
     render(){
-
         return (
-        <div className="CardDraw">            
+        <div className="CardDraw">   
+
+        <p>Draw your cards. Click each card below to reveal your reading.</p>
+            
             <div className="card_row">
-            <p>Draw your cards.</p>
-        
-            <h2>Past</h2> 
-            <br></br>
-           <CardContainer card={this.state.reading.past} drawCard={this.drawCard} deleteCard={this.deleteCard}/> 
+          
+                <div className="card_container">
+                    <h2>Past</h2> 
+                    <CardContainer 
+                    card={this.state.reading.past} 
+                    drawCard={this.drawCard} 
+                    deleteCard={this.deleteCard}
+                    card_refresh={this.state.card_refresh}
+                    /> 
+                </div>
 
-           <h2>Present</h2>
-           <br></br>
-           <CardContainer card={this.state.reading.present} drawCard={this.drawCard} deleteCard={this.deleteCard}/>
+                <div className="card_container">
+                    <h2>Present</h2>
+                    <CardContainer 
+                    card={this.state.reading.present} 
+                    drawCard={this.drawCard} 
+                    deleteCard={this.deleteCard}
+                    card_refresh={this.state.card_refresh}
+                    />
+                </div>
 
-           <h2>Future</h2> 
-           <br></br>
-           <CardContainer card={this.state.reading.future} drawCard={this.drawCard} deleteCard={this.deleteCard}/> 
+                <div className="card_container">
+                    <h2>Future</h2> 
+                    <CardContainer 
+                    card={this.state.reading.future} 
+                    drawCard={this.drawCard} 
+                    deleteCard={this.deleteCard}
+                    card_refresh={this.state.card_refresh}
+                    /> 
+                </div>
+
            </div>
            <div className="game_functions">
 
-            <button onClick={
+            <button onClick={this.saveReading}>Save This Reading</button>
                 
-                async ()=> {
-                await this.props.postReading(this.state.reading)
-                this.props.fetchReadings()
-                this.clearAllCards()
-                this.successfulSubmit()
-                } 
-                
-            }>Save This Reading</button>
-
             <button onClick={this.clearAllCards}>Refresh</button>
             </div>
         </div>
         )
-    }
+     
+    }   
 }
 
 export default CardDraw
-
-// the submit reading click needs to set off a cascade of functions:
-// first needs to validate thate there is actually data in the past, present, future keys (!== ''  or something similar)
-// (on the above point, can I replace the empty strings with null -- then use that to verify)
-// if that conditions is satisfied then post the reading
-// await post reading, then fetch readings (throw a console log or debugger in fetch readings in reading actions to make sure it's being hit every time)
-// await fetch readings, then post successful submit
-// then clear all cards 

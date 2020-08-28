@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
-import { Card } from '../components/Card'
-import { DrawCardButton } from '../components/drawCardButton'
-import { DeleteCardButton } from '../components/deleteCardButton';
+import Card from '../components/Card'
 
 class CardContainer extends Component {
 
     render(){
+        let cardOrientationMeaning; 
+        if (this.props.card.orientation === "upright") {
+            cardOrientationMeaning = this.props.card.upright_meaning
+        } else if (this.props.card.orientation === "reversed") {
+            cardOrientationMeaning = this.props.card.reversed_meaning
+        }
+
         return (
             <div className="CardContainer">
-                {/* To get the card to flip, need to set a class on the CardImage component and change with the drawCard function or helper function -- reverseCard */}
-                <Card card={this.props.card} />
-                <DrawCardButton period={this.props.card.period} drawCard={this.props.drawCard} addCard={this.props.addCard}/> 
-                {/* Below is the delete card button but also need to make sure that the above card draw button
-                deletes the card if there is already a card present and replaces it with another (maybe a put or patch function) */}
-                <DeleteCardButton period={this.props.card.period} deleteCard={this.props.deleteCard} />
+                <div>
+                    <Card card={this.props.card} card_refresh={this.props.card_refresh} drawCard={this.props.drawCard} deleteCard={this.props.deleteCard}/>
+                </div>
+
+                <h3>{this.props.card.name}</h3>
+                <p>{this.props.card.orientation}</p>
+                <p>{cardOrientationMeaning}</p>
             </div>
         )
     }

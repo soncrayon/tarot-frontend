@@ -7,16 +7,21 @@ import React, { Component } from 'react';
 
 class Reading extends Component {
 
-    showReading = () => {
-        alert('That click works')
-    }
+    // showReading = () => {
+    //     this.props.fadeUserReadingsBackground()
+    //     this.props.showExpandedReading()
+    //     alert('That click works')
+    // }
+
+    // Move the above function into the userReadings container and include a close and delete Reading button 
 
     render(){
         return (
             <div className="reading_thumbnail">
-                <button onClick={() => this.showReading()}>{this.props.reading.date_time_created}</button>
-                <br></br>
-                <img src={this.props.reading.cards[0].image} alt="reading_pic"></img>
+                {/* <button onClick={() => this.showReading()}>{this.props.reading.date_time_created}</button> */}
+                {/* <br></br> */}
+                <img src={this.props.reading.cards[0].image} alt="reading_pic" onClick={() => this.props.displayFullReading()}></img>
+                <h3>{this.props.reading.date_time_created}</h3>
             </div>
         )
     }

@@ -69,7 +69,9 @@ class App extends Component {
       this.props.fetchReadings()
     }
 
+  
   render() {
+    
     return (
       <div className="top_level">
 

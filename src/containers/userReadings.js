@@ -7,19 +7,33 @@ class UserReadings extends Component {
     redirectToLogin = () => {
         this.props.history.push('/')
     }
+
+    fadeOutBackground = () => {
+        alert('need to work on this still')
+    }
     
-    componentWillMount(){
+    displayFullReading = () => {
+        this.fadeOutBackground()
+    }
+    
+    UNSAFE_componentWillMount(){
         return this.props.loggedInStatus ? null : this.redirectToLogin()
     }
-
+  
     render(){
         return (
-            <div className="UserReadings">
+            <div className="user_readings_component">
                 <h3>Your Saved Readings</h3>
-                {this.props.readings.filter(reading => reading.cards[0].user_id === this.props.user.id ).map((reading) => {
-                    return <Reading reading={reading}/>
-                     }
-                )}
+                <div className="user_readings_list">
+                    {this.props.readings.filter(reading => reading.cards[0].user_id === this.props.user.id ).map((reading) => {
+                        return <Reading reading={reading} displayFullReading={this.displayFullReading}/>
+                        }
+                    )}
+                </div>
+                <div className="full_reading_display">
+
+                </div>
+            
             </div>
         )
     }

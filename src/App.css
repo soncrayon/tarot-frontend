@@ -118,7 +118,7 @@ html, body {
   z-index: 2;
 }
 
-nav {
+.app_nav nav {
   background-color: black;
   height: 3rem; 
   display: flex;
@@ -127,7 +127,7 @@ nav {
   padding:0; 
 }
 
-nav ul {
+.app_nav nav ul {
   list-style-type: none;
   display: flex;
   flex-direction: row;
@@ -135,13 +135,18 @@ nav ul {
   width: 100%;
 }
 
-nav a {
+.app_nav nav a {
   text-decoration: none;
   color:white; 
 }
 
-nav a:hover {
+.app_nav nav a:hover {
   color: goldenrod;
+}
+
+.app_nav_hidden {
+  display: none;
+  z-index: -1;
 }
 
 img {
@@ -240,7 +245,7 @@ img {
 .user_readings_list {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   width: 100%;
   height: 100%;
 }
@@ -249,8 +254,64 @@ img {
   margin: 2rem; 
 }
 
-.full_reading_display {
-  display: none; 
+.reading_thumbnail img {
+  transition: 0.3s; 
+}
+
+.reading_thumbnail img:hover {
+  cursor: pointer;
+  z-index: 5;
+  height: 26rem;
+  width: 15.6rem;
+}
+
+.full_reading_display_background {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;  
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.full_reading_display_splash {
+  display: block;
+  position: fixed;
+  color: black; 
+  background-color: white;
+  width: 40rem;
+  height: 25rem;
+  margin-top: 10rem;
+  padding: 2rem;
+  z-index: 10;
+}
+
+
+.full_reading_display_splash_hidden {
+  display: none;
+  z-index: -1;
+}
+
+.background_for_splash {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;  
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-color: black;
+  opacity: 0.6;
+  z-index: 5;
+}
+
+.background_for_splash_hidden {
+  display: none;
+  z-index: -1;
 }
 
 .about_text {

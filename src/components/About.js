@@ -1,15 +1,15 @@
 import React, { Component } from "react"
-import { withRouter } from 'react-router-dom'
+// import { withRouter } from 'react-router-dom'
 
 class About extends Component {
 
-    redirectToLogin = () => {
-        this.props.history.push('/')
-    }
+    // redirectToLogin = () => {
+    //     this.props.history.push('/')
+    // }
     
-    UNSAFE_componentWillMount(){
-        return this.props.loggedInStatus ? null : this.redirectToLogin()
-    }
+    // UNSAFE_componentWillMount(){
+    //     return this.props.loggedInStatus ? null : this.redirectToLogin()
+    // }
 
     render(){
         return (
@@ -28,4 +28,5 @@ class About extends Component {
     }
 }
 
-export default withRouter(About)
+// THIS WAS ENVELOPED IN A withRouter(About)
+export default About

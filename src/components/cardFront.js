@@ -1,24 +1,18 @@
 import React from 'react'
 
 const CardFront = (props) => {
-   
-        if (props.card.orientation === 'upright'){
-               
-               return (
-                    <div className="card_front">
+
+    const cardDisplay = {
+        upright: <div className="card_front">
                         <img 
                         className="upright" 
                         src={props.card.image} 
                         alt='card'
                         onClick={props.handleClick(props.card.period, props.card.orientation, "card_front")}
                         ></img> 
-                    </div>
-                ) 
+                    </div>,
 
-            } else if (props.card.orientation === 'reversed') {
-                
-                return (
-                    <div className="card_front">
+        reversed: <div className="card_front">
                         <img 
                         className="reversed" 
                         style={{transform: 'rotate(180deg)'}} 
@@ -27,10 +21,9 @@ const CardFront = (props) => {
                         onClick={props.handleClick(props.card.period, props.card.orientation, "card_front")}
                         ></img> 
                     </div>
-                )
-
-            }
-            return null 
+    }
+   
+    return cardDisplay[props.card.orientation] || null 
 }
 
 export default CardFront

@@ -5,6 +5,7 @@ import UserReadings from './containers/userReadings'
 import { fetchCards } from './actions/cardActions'
 import { fetchReadings , postReading } from './actions/readingActions'
 import LoginPage from './components/loginPage';
+import LoginWrapper from './components/loginWrapper'
 import Signup from './components/signupPage'
 import About from './components/About'
 import Home from './containers/home'
@@ -79,24 +80,29 @@ class App extends Component {
 
       <div className="App">
    
+      <div className="app_nav">
         <nav>
-          <ul>
-            <li> <Link to="/home">Home</Link> </li>
-            <li> <Link to="/about">About</Link> </li>
-            <li> <Link to="/user_readings">User Readings</Link> </li>
-            <li> <Link to="/" onClick={this.handleLogout}>Logout</Link> </li>
-          </ul>
-        </nav>
+            <ul>
+              <li> <Link to="/home">Home</Link> </li>
+              <li> <Link to="/about">About</Link> </li>
+              <li> <Link to="/user_readings">User Readings</Link> </li>
+              <li> <Link to="/" onClick={this.handleLogout}>Logout</Link> </li>
+            </ul>
+          </nav>
+      </div>
+      
        
         <Switch>
     
           <Route
           path='/about'
           render={(props) => (
-            <About 
-              {...props}
-              loggedInStatus={this.state.isLoggedIn}
-            />
+            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+              <About 
+                {...props}
+              />
+            </LoginWrapper>
+           
           )}
           />
           

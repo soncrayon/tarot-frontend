@@ -1,8 +1,3 @@
-// 25AUG2020 -- need to spend some time figuring out whether any of this code can be extracted out into separate components
-// This is a very long containiner component. 
-
-// click even on any card only changes the last one. 
-
 import React, { Component } from 'react';
 import CardContainer from './cardContainer'
 import { getCardOrientation } from '../actions/getCardOrientation'
@@ -14,6 +9,8 @@ class CardDraw extends Component {
     this.state = this.initialState;
    }
 
+//  this getter function sets the initial attributes for all the cards which are just empty strings at this point
+//  it also adds a card_refresh key to add more control in re-displaying the cardBack component when cards are refreshed 
    get initialState() {
 
         let cardAttributes = {
@@ -47,40 +44,42 @@ class CardDraw extends Component {
        }
    }
 
+// once the new attributes are derived from the new card picked at random, state is updated with that information
    updateStateWithDrawnCard = (newCardAtrributes) => {
-    if (newCardAtrributes.period === 'past') {
-        return this.setState({
-            ...this.state,
-            reading: {
-            ...this.state.reading, 
-                past: { ...newCardAtrributes }
-            }   
-         })
-    } else if (newCardAtrributes.period === 'present') {
-        return this.setState({
-            ...this.state,
-            reading: {
-            ...this.state.reading, 
-                present: { ...newCardAtrributes }
-            }   
-         })
-    } else {
-        return this.setState({
-            ...this.state,
-            reading: {
-            ...this.state.reading, 
-                future: { ...newCardAtrributes }
-            }   
-         })
-    }        
-}
+    
+    const updatedCardState = {
 
-   setCardOrientation = () => {
-    //    do I need this function at all -- can I just rely on getCardOrientation in the below set attributes 
-    // since a value is being returned from that function??? 
-    return getCardOrientation()
+            past: () => { return this.setState({
+                ...this.state,
+                reading: {
+                ...this.state.reading, 
+                    past: { ...newCardAtrributes }
+                }   
+            })},
+
+            present: () => { return this.setState({
+                ...this.state,
+                reading: {
+                ...this.state.reading, 
+                    present: { ...newCardAtrributes }
+                }   
+            })},
+
+            future: () => { return this.setState({
+                ...this.state,
+                reading: {
+                ...this.state.reading, 
+                    future: { ...newCardAtrributes }
+                }   
+            })}
+
+        }
+
+    return updatedCardState[newCardAtrributes.period]() || this.state 
+
     }
    
+    // set newCardAttributes object from drawnCard object to match api variables to application attributes; pass object to update state function
    setCardAttributes = (drawnCard, period) => {
        let newCardAtrributes = {
         period: period, 
@@ -89,88 +88,88 @@ class CardDraw extends Component {
         upright_meaning: drawnCard.upright,
         reversed_meaning: drawnCard.reversed,
         image: drawnCard.image,
-        orientation: this.setCardOrientation(),
+        orientation: getCardOrientation(),
         id: drawnCard.id,
         reading_id: '',
         user_id: this.props.user.id
      }
      this.updateStateWithDrawnCard(newCardAtrributes)
    }
+
    
-    drawCard = (period) => {
-        let drawnCard = this.getCard()
-        this.setCardAttributes(drawnCard, period)
-    }
+//    set an array to hold card ids to check for duplication 
 
-    getCard = () => {
-        let drawnCard
-
-        let drawnCardIds = Object.entries(this.state.reading).map(([period, value]) => {
+   setCardDeduplicationArray = () => {
+        return Object.entries(this.state.reading).map(([period, value]) => {
             return value.id
         })
-    
+   }
+
+//  pick a card at random from card objects in redux store; check the id to ensure that the card does not match a card that was already drawn 
+    drawCard = (period) => {
+        let drawnCard
+
         do {
             drawnCard = this.props.cards[Math.floor(Math.random() * this.props.cards.length)]
-        } while (drawnCardIds.indexOf(drawnCard.id) !== -1)
-        return drawnCard
+        } while (this.setCardDeduplicationArray().indexOf(drawnCard.id) !== -1)
+        
+        
+        this.setCardAttributes(drawnCard, period)
     }
-
+   
+    // this function will choose the appropriate card based on the passed-in period and reset it to its initial state 
     deleteCard = (period) => {
 
-        switch(period) {
-
-            case 'past': 
+        const resetCardState = {
             
-            return this.setState({
-                ...this.state,
-                reading: {
-                    ...this.state.reading, 
-                    past: this.initialState.reading.past
-                },
-            })
+                past: () => { return this.setState({
+                    ...this.state,
+                    reading: {
+                        ...this.state.reading, 
+                        past: this.initialState.reading.past
+                    }
+                })},
 
-            case 'present':
+                present: () => { return this.setState({
+                    ...this.state,
+                    reading: {
+                        ...this.state.reading, 
+                        present: this.initialState.reading.present
+                    }
+                })},
 
-            return this.setState({
-                ...this.state,
-                reading: {
-                    ...this.state.reading, 
-                    present: this.initialState.reading.present
-                },
-            })
+                future: () => { return this.setState({
+                    ...this.state,
+                    reading: {
+                        ...this.state.reading, 
+                        future: this.initialState.reading.future
+                    }
+                })}
+            }
 
-            case 'future':
+        return resetCardState[period]() || this.state 
 
-            return this.setState({
-                ...this.state,
-                reading: {
-                    ...this.state.reading, 
-                    future: this.initialState.reading.future
-                },
-            })
-
-            default: return this.state
-        }
     }
 
-    clearAllCards = () => {
-        this.setState({...this.initialState, card_refresh: prevState => !prevState.card_refresh})
-    }
-
-    successfulSubmit = () => {
-        alert('You have successfully submitted your reading.  Click readings in the menu to view.')
-    }
-
+// fetch updated readings
+// this forces an update to state so that new readings are reflected immediately in the app 
     updateStateWithNewReading = () => {
         this.setState(this.props.fetchReadings())
     }
 
-    updateAppAfterReadingSubmission = () => {
-        this.clearAllCards()
-        this.successfulSubmit()
+// clear card spread 
+    clearAllCards = () => {
+        this.setState({...this.initialState, card_refresh: prevState => !prevState.card_refresh})
         this.updateStateWithNewReading()
     }
 
+// notify user of successful submission 
+    updateAppAfterReadingSubmission = () => {
+        alert('You have successfully submitted your reading.  Click readings in the menu to view.')
+        this.clearAllCards()
+    }
+
+// post the reading to the backend 
     saveReading = async () => {
         await this.props.postReading(this.state.reading)
         this.updateAppAfterReadingSubmission()

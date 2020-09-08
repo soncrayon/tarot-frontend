@@ -1,3 +1,5 @@
+// 6SEP2020 NEED TO ENSURE USERS CAN'T SAVE A READING WITH JUST ONE OR TWO CARDS
+
 import React, { Component } from 'react';
 import CardContainer from './cardContainer'
 import { getCardOrientation } from '../actions/getCardOrientation'
@@ -216,9 +218,9 @@ class CardDraw extends Component {
            </div>
            <div className="game_functions">
 
-            <button onClick={this.saveReading}>Save This Reading</button>
+            <button className="save_reading_button" onClick={this.saveReading}>Save This Reading</button>
                 
-            <button onClick={this.clearAllCards}>Refresh</button>
+            <button className="clear_card_button" onClick={this.clearAllCards}>Refresh</button>
             </div>
         </div>
         )

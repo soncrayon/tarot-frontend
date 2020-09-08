@@ -1,21 +1,29 @@
+// 6SEP2020 -- COMPONENT UPDATES THE GOVERNING CARD EVERYTIME THE COMPONENT UPDATES -- CAN WE TAKE ADVANTAGE OF SHOULDCOMPONENTUPDATE TO STOP THIS 
+// NEED TO DO SOMETHING ABOUT THE DOUBLED UP KEYS FOR reading.reading and card.card
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faBars, faCaretDown, faCaretUp, faTimes} from '@fortawesome/free-solid-svg-icons'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+
 import UserReadings from './containers/userReadings'
 import { fetchCards } from './actions/cardActions'
 import { fetchReadings , postReading } from './actions/readingActions'
 import LoginPage from './components/loginPage';
 import LoginWrapper from './components/loginWrapper'
+import LandingPageWrapper from './components/landingPageWrapper'
 import Signup from './components/signupPage'
 import About from './components/About'
 import Home from './containers/home'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom"
+import AppTitle from './components/appTitle'
+import UserAccountMenu from './components/userAccountMenu'
+import DetailedCardContainer from './containers/detailedCardsContainer';
 
+
+// using a library component from FontAwesome to hold icons for the applications components
+library.add(faBars, faCaretDown, faCaretUp, faTimes)
 
 class App extends Component {   
   
@@ -29,13 +37,15 @@ class App extends Component {
 
   handleLogin = (data) => {
     this.setState({
+      ...this.state,
       isLoggedIn: true,
       user: data.user
     })
   }
-
+ 
   handleLogout = () => {
       this.setState({
+      ...this.state,
       isLoggedIn: false,
       user: {}
       })
@@ -63,93 +73,102 @@ class App extends Component {
     redirectToLogin = () => {
       this.props.history.push('/')
     }
-   
+ 
   componentDidMount (){
       this.loginStatus() 
       this.props.fetchCards()
       this.props.fetchReadings()
     }
-
-  
+ 
   render() {
     
     return (
-      <div className="top_level">
+    <div className="top_level">
 
     <Router>
 
       <div className="App">
    
-      <div className="app_nav">
-        <nav>
-            <ul>
-              <li> <Link to="/home">Home</Link> </li>
-              <li> <Link to="/about">About</Link> </li>
-              <li> <Link to="/user_readings">User Readings</Link> </li>
-              <li> <Link to="/" onClick={this.handleLogout}>Logout</Link> </li>
-            </ul>
-          </nav>
-      </div>
+        <div className="app_nav">
+
+          <AppTitle />
+          
+          <div className="menu_container">
+              <div className="nav_item"> <Link to="/home">HOME</Link> </div>
+              <div className="nav_item"> <Link to="/user_readings">YOUR READINGS</Link> </div>
+              <div className="nav_item"> <Link to="/card_descriptions">CARD DESCRIPTIONS</Link></div>
+              <div className="nav_item"> <Link to="/about">ABOUT</Link> </div>
+              <div className="nav_item"> <Link to="/">LOGOUT</Link> </div>
+          </div>
       
-       
+          <UserAccountMenu first_name={this.state.user.first_name}/>
+
+        </div>
+      
+        
         <Switch>
     
           <Route
           path='/about'
           render={(props) => (
+              <About {...props} />           
+          )}
+          />
+
+          <Route
+          path='/card_descriptions'
+          render={(props) => (
             <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
-              <About 
-                {...props}
-              />
+              <DetailedCardContainer {...props} cards={this.props.cards.cards} />           
             </LoginWrapper>
-           
           )}
           />
           
           <Route
           path='/home'
           render={(props) => (
-            <Home 
-              {...props}
-              user={this.state.user}
-              cards={this.props.cards.cards} 
-              postReading={this.props.postReading} 
-              fetchReadings={this.props.fetchReadings}
-              deleteCard={this.deleteCard}
-              loggedInStatus={this.state.isLoggedIn}
-            />
+            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+              <Home 
+                {...props}
+                user={this.state.user}
+                cards={this.props.cards.cards} 
+                postReading={this.props.postReading} 
+                fetchReadings={this.props.fetchReadings}
+                deleteCard={this.deleteCard}
+              />
+            </LoginWrapper>
           )}
           />
           
           <Route
           path='/user_readings'
           render={(props) => (
-            <UserReadings 
-              {...props}
-              user={this.state.user}
-              readings={this.props.readings.readings}
-              loggedInStatus={this.state.isLoggedIn}
-            />
+            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+              <UserReadings 
+                {...props}
+                user={this.state.user}
+                readings={this.props.readings.readings}
+              />
+            </LoginWrapper>
           )}
           />
           
           <Route
           path='/create_account'
           render={(props) => (
-            <Signup 
-              {...props}
-              handleLogin={this.handleLogin}
-            />
+            <LandingPageWrapper {...props}>
+              <Signup {...props} handleLogin={this.handleLogin} />
+            </LandingPageWrapper>
           )}
           />
 
           <Route
           path='/'
           render={(props) => (
-            <LoginPage 
-              {...props}
-              handleLogin={this.handleLogin}
-            />
+            <LandingPageWrapper {...props}>
+              <LoginPage {...props} handleLogin={this.handleLogin} />
+            </LandingPageWrapper>
+          
           )}
           />
 

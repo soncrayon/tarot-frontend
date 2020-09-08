@@ -1,38 +1,33 @@
-import React, { Component } from 'react';
-import AppHeader from '../components/appHeader'
-import CardDrawAndReadingDisplay from './cardDrawAndReadingDisplay'
-import { withRouter } from 'react-router-dom'
+import React from 'react';
+import CardDraw from './cardDraw'
+import GoverningCard from '../components/governingCard'
 
-class Home extends Component {
-    
-    redirectToLogin = () => {
-        this.props.history.push('/')
-    }
-    
-    UNSAFE_componentWillMount(){
-        return this.props.loggedInStatus ? null : this.redirectToLogin()
-    }
+const Home = (props) => {
+    return (
+        <div className="home">
 
-    render(){
-        return (
-            <div className="Home">
+            <div className="card_draw_and_governing_card">
 
-                <AppHeader 
-                first_name={this.props.user.first_name}
-                />
+                <div className="card_draw">
+                    <CardDraw 
+                    user={props.user}
+                    cards={props.cards} 
+                    postReading={props.postReading} 
+                    fetchReadings={props.fetchReadings}
+                    deleteCard={props.deleteCard}
+                    /> 
+                </div>
 
-                <CardDrawAndReadingDisplay 
-                user={this.props.user}
-                cards={this.props.cards} 
-                postReading={this.props.postReading} 
-                fetchReadings={this.props.fetchReadings}
-                deleteCard={this.props.deleteCard}
-                loggedInStatus={this.props.loggedInStatus}
-                /> 
+                <div className="governing_card">
+                    <GoverningCard 
+                    card={props.cards[Math.floor(Math.random() * props.cards.length)]}
+                    />
+                </div>
 
             </div>
-        )
-    }
+
+        </div>
+    )
 }
 
-export default withRouter(Home)
+export default Home

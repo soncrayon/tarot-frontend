@@ -12,14 +12,18 @@ class CardContainer extends Component {
         }
 
         return (
-            <div className="CardContainer">
-                <div>
+            <div className="card_container">
+
+                <div className="card_image">
                     <Card card={this.props.card} card_refresh={this.props.card_refresh} drawCard={this.props.drawCard} deleteCard={this.props.deleteCard}/>
                 </div>
 
-                <h3>{this.props.card.name}</h3>
-                <p>{this.props.card.orientation}</p>
-                <p>{cardOrientationMeaning}</p>
+                <div className="card_info">
+                    <h3>{this.props.card.name}</h3>
+                    <p>{this.props.card.orientation}</p>
+                    <p>{cardOrientationMeaning}</p>
+                </div>
+               
             </div>
         )
     }

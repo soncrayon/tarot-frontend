@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
+import LoginTitle from './loginTitle'
 
 class LoginPage extends Component {
 
@@ -64,18 +65,6 @@ class LoginPage extends Component {
           </div>
         )
       }
-    
-    UNSAFE_componentWillMount() {
-        return this.props.loggedInStatus ? this.redirectToApp() : null
-    }
-
-    componentDidMount(){
-        document.querySelector('nav').style.display = "none";
-     }
-  
-     componentWillUnmount(){
-        document.querySelector('nav').style.display = "flex";
-     }
 
     render(){
 
@@ -83,49 +72,57 @@ class LoginPage extends Component {
 
         return(
             <div className="credential_background">
-                <p  className="main_title">ORI</p>
-                <p className="subtitle">Tarot</p>
+              
+              <div className="credential"> 
 
-                    <form className="login_form" onSubmit={this.handleSubmit}>
-                        <label className="label">
-                            Email: <br></br>
-                            <input 
-                            type="email" 
-                            id="email" 
-                            className="input" 
-                            placeholder="Enter email" 
-                            value={email}
-                            onChange={this.handleChange}
-                            />
-                        </label>
-                        <br></br>
-                        <label className="label">
-                            Password: <br></br>
-                            <input 
-                            type="password" 
-                            id="password" 
-                            className="input" 
-                            placeholder="Enter password"
-                            value={password} 
-                            onChange={this.handleChange}
-                            />
-                        </label>
-                        <br></br>
-                            <input 
-                            type="submit" 
-                            value="Login" 
-                            className="submit_button"
-                            disabled={!this.validateForm()}
-                            />
-                    </form>
+                <div className="form_half">
+                  <form className="login_form" onSubmit={this.handleSubmit}>
+                      <label className="label">
+                          <input 
+                          type="email" 
+                          id="email" 
+                          className="input" 
+                          placeholder="Enter email" 
+                          value={email}
+                          onChange={this.handleChange}
+                          />
+                      </label>
+                      <br></br>
+                      <label className="label">
+                          <input 
+                          type="password" 
+                          id="password" 
+                          className="input" 
+                          placeholder="Enter password"
+                          value={password} 
+                          onChange={this.handleChange}
+                          />
+                      </label>
+                      <br></br>
+                          <input 
+                          type="submit" 
+                          value="LOGIN" 
+                          className="submit_button"
+                          disabled={!this.validateForm()}
+                          />
+                  </form>
 
-                    <br></br>
+                  <br></br>
 
-                    <button onClick={this.redirectToSignup} className="link">Don't have an account?</button>
+                  <button onClick={this.redirectToSignup} className="create_account-button">SIGN UP</button>
 
-                    <div>
-                        {this.state.errors ? this.handleErrors() : null}
-                    </div>
+                  <div>
+                      {this.state.errors ? this.handleErrors() : null}
+                  </div>
+                </div>
+
+                <div className="app_title_half">
+                </div>
+
+              </div>
+
+                <LoginTitle />
+                
             </div>
         )
     }

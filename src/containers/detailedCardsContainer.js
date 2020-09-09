@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
+import DetailedCardModal from '../components/detailedCardModal'
 
 class DetailedCardContainer extends Component {
 
+    state = {
+        view: null, 
+        showDetailedCard: false,
+        cardToShow: {}
+    }
+   
     displayDetailedCard = (id) => {
+        
         let cardToShow = this.props.cards.filter(card => card.id === id)[0]
-        console.log(cardToShow)
+      
+        this.setState({
+            view: {position: "fixed"},
+            showDetailedCard: true,
+            cardToShow: cardToShow
+        })
+    }
+
+    closeDetailedCard = () => {
+        this.setState({
+            view: null, 
+            showDetailedCard:false 
+        })
     }
 
     render(){
     
         return (
-            <div className="detailed_card_container">
+            <div className="detailed_card_container" style={this.state.view}>
                     
                 <h2>The Major Arcana</h2>
 
@@ -56,6 +76,8 @@ class DetailedCardContainer extends Component {
                             }
                         )}
                     </div>
+                    
+                    {this.state.showDetailedCard ? <DetailedCardModal card={this.state.cardToShow} closeDetailedCard={this.closeDetailedCard}/> : null }
                    
             </div>
         )

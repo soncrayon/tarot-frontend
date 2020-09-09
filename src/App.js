@@ -1,5 +1,6 @@
 // 6SEP2020 -- COMPONENT UPDATES THE GOVERNING CARD EVERYTIME THE COMPONENT UPDATES -- CAN WE TAKE ADVANTAGE OF SHOULDCOMPONENTUPDATE TO STOP THIS 
 // NEED TO DO SOMETHING ABOUT THE DOUBLED UP KEYS FOR reading.reading and card.card
+// UPDATE ABOUT COMPONENT SO THAT ITS A SPLASH AND NOT A PAGE IN THE APP B/C IT WILL BE ACCESSED W/O LOGIN
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
@@ -10,7 +11,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
 import UserReadings from './containers/userReadings'
 import { fetchCards } from './actions/cardActions'
-import { fetchReadings , postReading } from './actions/readingActions'
+import { fetchReadings , postReading, deleteReading } from './actions/readingActions'
 import LoginPage from './components/loginPage';
 import LoginWrapper from './components/loginWrapper'
 import LandingPageWrapper from './components/landingPageWrapper'
@@ -195,6 +196,7 @@ const mapDispatchToProps = dispatch => ({
   fetchCards: () => dispatch(fetchCards()),
   fetchReadings: () => dispatch(fetchReadings()), 
   postReading: readingObject => dispatch(postReading(readingObject)),
+  deleteReading: readingObject => dispatch(deleteReading(readingObject))
 })
 
 

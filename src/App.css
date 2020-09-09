@@ -1,3 +1,5 @@
+/* REFACTOR CSS (WITH SASS?) SO THAT IT'S A LITTLE LESS UNWIELDY */
+
 * {
   box-sizing: border-box;
   font-family: 'Josefin Sans', sans-serif;
@@ -221,11 +223,6 @@ html, body {
   width: 100%;
 }
 
-.app_nav_hidden {
-  display: none;
-  z-index: -1;
-}
-
 .app_title {
   height: 100%;
   width: 20%;
@@ -274,7 +271,6 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  /* text-align: center; */
   margin: 0;
   padding: 0;
   height: 20%;
@@ -362,7 +358,8 @@ img {
   text-align: center;
   width: 100%;
   height: 100%;
-  padding: 2%; 
+  padding: 3%; 
+  overflow: hidden; 
 }
 
 .user_readings_list {
@@ -388,54 +385,55 @@ img {
   width: 12.6rem;
 }
 
-.full_reading_display_background {
-  height: 100%;
+.modal_container {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 0;
-  margin: 0;  
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  background-color: black;
-  opacity: 0.5;
-  z-index: 1;
-}
-
-.full_reading_display_splash {
-  display: block;
-  position: fixed;
-  color: black; 
-  background-color: white;
-  width: 70%;
-  height: 65%;
-  margin-top: 3%;
-  margin-left: 14%; 
-  padding: 2rem;
-  z-index: 10;
-}
-
-
-.full_reading_display_splash_hidden {
-  display: none;
-  z-index: -1;
-}
-
-.background_for_splash {
   height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;  
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
-  position: fixed;
-  background-color: black;
-  opacity: 0.6;
-  z-index: 5;
+  align-items: center;
+  justify-content: center;
 }
 
-.background_for_splash_hidden {
-  display: none;
-  z-index: -1;
+.full_reading_modal, .detailed_card_modal {
+  background: white;
+  border: 0.2rem solid black;
+  border-radius: 0.5rem;
+  padding: 3%;
+  height: 40rem;
+  width: 80rem;
+  overflow: scroll; 
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.full_reading_modal button.close_modal, .detailed_card_modal button.close_modal {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.full_reading_modal button.delete_button {
+  background-color: black;
+  color: white; 
+  height: 2.5rem;
+  width: 10rem; 
+  cursor: pointer;
+}
+
+.full_reading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%; 
+}
+
+.full_reading img, .detailed_card img {
+  height: 15rem;
+  width: 9rem;
 }
 
 .about_text {
@@ -452,8 +450,7 @@ img {
 .detailed_card_container {
   display: flex;
   flex-flow: column wrap; 
-  padding: 3%; 
-  margin-top: 2%;
+  padding: 5%; 
   height: 100%;
   width: 100%;
 }

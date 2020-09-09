@@ -1,6 +1,7 @@
 import React from 'react';
 
 const GoverningCard = (props) => {
+    
     return (
         <div>
             <h3>Governing Card for this Drawing</h3>

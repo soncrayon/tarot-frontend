@@ -41,7 +41,7 @@ class FullReadingModal extends Component {
 
                 </div>
 
-                    <button onClick={() => this.props.deleteReading()} className="delete_button">DELETE READINGS</button>
+                    <button onClick={() => this.props.deleteReading()} className="delete_button">DELETE READING</button>
                         
                
 

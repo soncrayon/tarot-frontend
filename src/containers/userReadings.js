@@ -26,6 +26,10 @@ class UserReadings extends Component {
         })
     }
 
+    componentWillMount(){
+        this.props.fetchReadings(this.props.user.id)
+      }
+
     render(){
         return (
             <div className="user_readings_component" style={this.state.view}>
@@ -33,13 +37,20 @@ class UserReadings extends Component {
                 <h2>Your Saved Readings</h2>
 
                 <div className="user_readings_list">
-                    {this.props.readings.filter(reading => reading.cards[0].user_id === this.props.user.id ).map((reading, index) => {
+                    {this.props.readings[0] ? this.props.readings.map((reading, index) => {
                         return <ReadingThumbnail key={index} reading={reading} displayFullReading={this.displayFullReading}/>
                         }
-                    )}
+                    ) : <p>You don't have any readings yet.  Click "Home" above and do your first one!</p>}
                 </div>
                 
-                {this.state.showFullReading ? <FullReadingModal reading={this.state.readingToShow} closeFullReading={this.closeFullReading}/> : null }
+                {this.state.showFullReading ? <FullReadingModal 
+                user={this.props.user}
+                reading={this.state.readingToShow} 
+                fetchReadings={this.props.fetchReadings}
+                closeFullReading={this.closeFullReading} 
+                deleteReading={this.props.deleteReading}
+                deleteCard={this.props.deleteCard}
+                /> : null }
 
             </div>
         )

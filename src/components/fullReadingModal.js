@@ -10,6 +10,31 @@ class FullReadingModal extends Component {
        return {}
     }
 
+    
+    closeModalAndNotifyClient = () => {
+        this.props.closeFullReading()
+        alert("You have successfully deleted that reading.")
+    }
+
+    updateStateWithNewReading = () => {
+        this.setState(this.props.fetchReadings(this.props.user.id))
+        this.closeModalAndNotifyClient()        
+    }
+    
+    deleteReadingFromBackend = async (readingId) => {
+        await this.props.deleteReading(readingId)
+        return this.updateStateWithNewReading()
+    }
+
+    deleteCardsFromBackend = async (reading) => {
+        await this.props.deleteCard(reading.cards)
+        return this.deleteReadingFromBackend(reading.id)
+    }
+
+    deleteReading = (reading) => {
+        this.deleteCardsFromBackend(reading)
+    }
+   
     render(){
         return this.props.reading.cards ? (
         <div className="modal_container">
@@ -41,7 +66,7 @@ class FullReadingModal extends Component {
 
                 </div>
 
-                    <button onClick={() => this.props.deleteReading()} className="delete_button">DELETE READING</button>
+                <button onClick={() => this.deleteReading(this.props.reading)} className="delete_button">DELETE READING</button>
                         
                
 

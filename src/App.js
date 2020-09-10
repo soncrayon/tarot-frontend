@@ -10,8 +10,8 @@ import { faBars, faCaretDown, faCaretUp, faTimes} from '@fortawesome/free-solid-
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
 import UserReadings from './containers/userReadings'
-import { fetchCards } from './actions/cardActions'
-import { fetchReadings , postReading, deleteReading } from './actions/readingActions'
+import { fetchCards, deleteCard } from './actions/cardActions'
+import { fetchReadings, postReading, deleteReading } from './actions/readingActions'
 import LoginPage from './components/loginPage';
 import LoginWrapper from './components/loginWrapper'
 import LandingPageWrapper from './components/landingPageWrapper'
@@ -32,7 +32,7 @@ class App extends Component {
     super(props);
     this.state = { 
       isLoggedIn: false,
-      user: {}
+      user: null
      };
   }
 
@@ -78,9 +78,8 @@ class App extends Component {
   componentDidMount (){
       this.loginStatus() 
       this.props.fetchCards()
-      this.props.fetchReadings()
     }
- 
+
   render() {
     
     return (
@@ -99,10 +98,10 @@ class App extends Component {
               <div className="nav_item"> <Link to="/user_readings">YOUR READINGS</Link> </div>
               <div className="nav_item"> <Link to="/card_descriptions">CARD DESCRIPTIONS</Link></div>
               <div className="nav_item"> <Link to="/about">ABOUT</Link> </div>
-              <div className="nav_item"> <Link to="/">LOGOUT</Link> </div>
+              <div className="nav_item"> <Link to="/" onClick={this.handleLogout}>LOGOUT</Link> </div>
           </div>
       
-          <UserAccountMenu first_name={this.state.user.first_name}/>
+          {this.state.user ? <UserAccountMenu first_name={this.state.user.first_name}/> : null} 
 
         </div>
       
@@ -134,7 +133,7 @@ class App extends Component {
                 user={this.state.user}
                 cards={this.props.cards.cards} 
                 postReading={this.props.postReading} 
-                fetchReadings={this.props.fetchReadings}
+                fetchReadings ={this.props.fetchReadings}
                 deleteCard={this.deleteCard}
               />
             </LoginWrapper>
@@ -146,9 +145,12 @@ class App extends Component {
           render={(props) => (
             <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
               <UserReadings 
-                {...props}
-                user={this.state.user}
-                readings={this.props.readings.readings}
+              {...props} 
+              user={this.state.user} 
+              readings={this.props.readings.readings} 
+              fetchReadings={this.props.fetchReadings} 
+              deleteReading={this.props.deleteReading} 
+              deleteCard={this.props.deleteCard} 
               />
             </LoginWrapper>
           )}
@@ -167,7 +169,7 @@ class App extends Component {
           path='/'
           render={(props) => (
             <LandingPageWrapper {...props}>
-              <LoginPage {...props} handleLogin={this.handleLogin} />
+              <LoginPage {...props} handleLogin={this.handleLogin} user={this.state.user} fetchReadings={this.props.fetchReadings}/>
             </LandingPageWrapper>
           
           )}
@@ -194,7 +196,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   fetchCards: () => dispatch(fetchCards()),
-  fetchReadings: () => dispatch(fetchReadings()), 
+  deleteCard: cardObject => dispatch(deleteCard(cardObject)),
+  fetchReadings: userId => dispatch(fetchReadings(userId)), 
   postReading: readingObject => dispatch(postReading(readingObject)),
   deleteReading: readingObject => dispatch(deleteReading(readingObject))
 })

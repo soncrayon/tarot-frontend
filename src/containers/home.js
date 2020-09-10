@@ -11,6 +11,7 @@ class Home extends Component {
         }
     }
 
+    // needed to set te governing card in the did mount part of lifecyle to prevent it updating every time the home component did 
     componentDidMount (){
         return (
             this.setState({

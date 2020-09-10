@@ -11,26 +11,19 @@ export const postReading = (readingObj) => {
     }
 }
 
-export const deleteReading = (readingObj) => { 
-    debugger
+export const deleteReading = (readingId) => { 
     return (dispatch) => {
-        dispatch({type:'LOADING_CARDS'});
-        fetch('http://localhost:3001/cards', {
-            method:'DELETE',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({card: {...readingObj}})
+        dispatch({type: 'LOADING_READINGS'});
+        fetch(`http://localhost:3001/readings/${readingId}`, {
+            method: 'DELETE'
         })
     }
 }
 
-// need to set the userReadings to only display readings for the currently logged in user. 
-
-export const fetchReadings = () => {
+export const fetchReadings = (userId) => {
     return (dispatch) => {
         dispatch({type:'LOADING_READINGS'});
-        fetch('http://localhost:3001/readings')
+        fetch(`http://localhost:3001/loggedin_user_readings/${userId}`)
             .then(resp => resp.json())
             .then(readingsJSONResponse => { 
                 dispatch({type:'ADD_READINGS', readings: readingsJSONResponse})

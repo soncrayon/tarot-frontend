@@ -156,7 +156,7 @@ class CardDraw extends Component {
 // fetch updated readings
 // this forces an update to state so that new readings are reflected immediately in the app 
     updateStateWithNewReading = () => {
-        this.setState(this.props.fetchReadings())
+        this.setState(this.props.fetchReadings(this.props.user.id))
     }
 
 // clear card spread 

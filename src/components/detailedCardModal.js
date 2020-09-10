@@ -2,7 +2,7 @@ import React from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const DetailedCardModal = (props) => {
-    debugger
+    
     return props.card ? (
         <div className="modal_container">
 

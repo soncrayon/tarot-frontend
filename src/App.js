@@ -1,17 +1,13 @@
-// 6SEP2020 -- COMPONENT UPDATES THE GOVERNING CARD EVERYTIME THE COMPONENT UPDATES -- CAN WE TAKE ADVANTAGE OF SHOULDCOMPONENTUPDATE TO STOP THIS 
-// NEED TO DO SOMETHING ABOUT THE DOUBLED UP KEYS FOR reading.reading and card.card
-// UPDATE ABOUT COMPONENT SO THAT ITS A SPLASH AND NOT A PAGE IN THE APP B/C IT WILL BE ACCESSED W/O LOGIN
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars, faCaretDown, faCaretUp, faTimes} from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown} from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
-
 import UserReadings from './containers/userReadings'
 import { fetchCards, deleteCard } from './actions/cardActions'
 import { fetchReadings, postReading, deleteReading } from './actions/readingActions'
+import { fetchUserSuits, fetchAllSuits, fetchUserOrientations, fetchAllOrientations } from './actions/userActions'
 import LoginPage from './components/loginPage';
 import LoginWrapper from './components/loginWrapper'
 import LandingPageWrapper from './components/landingPageWrapper'
@@ -21,10 +17,12 @@ import Home from './containers/home'
 import AppTitle from './components/appTitle'
 import UserAccountMenu from './components/userAccountMenu'
 import DetailedCardContainer from './containers/detailedCardsContainer';
+import Trends from './containers/trends'
+import AccountSettings from './components/accountSettings'
 
 
 // using a library component from FontAwesome to hold icons for the applications components
-library.add(faBars, faCaretDown, faCaretUp, faTimes)
+library.add(faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown)
 
 class App extends Component {   
   
@@ -32,7 +30,8 @@ class App extends Component {
     super(props);
     this.state = { 
       isLoggedIn: false,
-      user: null
+      user: null,
+      user_account_menu_display: {display: 'none'}
      };
   }
 
@@ -74,10 +73,31 @@ class App extends Component {
     redirectToLogin = () => {
       this.props.history.push('/')
     }
+
+    toggleUserAccountMenu = () => {
+      this.state.user_account_menu_display.display === 'none' ?
+      this.setState({
+        ...this.state,
+        user_account_menu_display: {display: 'flex'}
+      }) :
+      this.setState({
+        ...this.state,
+        user_account_menu_display: {display: 'none'}
+      })
+    }
+
+    updateUserAfterAccountSettingsEdit = (data) => {
+      this.setState({
+        ...this.state,
+        user: data
+      })
+    }
  
   componentDidMount (){
       this.loginStatus() 
       this.props.fetchCards()
+      this.props.fetchAllSuits()
+      this.props.fetchAllOrientations()
     }
 
   render() {
@@ -101,8 +121,13 @@ class App extends Component {
               <div className="nav_item"> <Link to="/" onClick={this.handleLogout}>LOGOUT</Link> </div>
           </div>
       
-          {this.state.user ? <UserAccountMenu first_name={this.state.user.first_name}/> : null} 
+          {this.state.user ? <UserAccountMenu user={this.state.user} toggleUserAccountMenu={this.toggleUserAccountMenu}/> : null} 
 
+        </div>
+
+        <div className="user_account_menu_options" style={this.state.user_account_menu_display}>
+            <div><Link to="/trends" onClick={() => this.toggleUserAccountMenu()}>YOUR TRENDS</Link></div>
+            <div><Link to="/account_settings" onClick={() => this.toggleUserAccountMenu()}>ACCOUNT SETTINGS</Link></div>
         </div>
       
         
@@ -111,7 +136,9 @@ class App extends Component {
           <Route
           path='/about'
           render={(props) => (
+            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
               <About {...props} />           
+            </LoginWrapper>
           )}
           />
 
@@ -155,6 +182,34 @@ class App extends Component {
             </LoginWrapper>
           )}
           />
+
+          <Route
+          path='/account_settings'
+          render={(props) => (
+            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+              <AccountSettings {...props} user={this.state.user}
+              updateUserAfterAccountSettingsEdit = {this.updateUserAfterAccountSettingsEdit}
+              />           
+            </LoginWrapper>
+          )}
+          />
+
+          <Route
+          path='/trends'
+          render={(props) => (
+            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+              <Trends {...props} 
+              user={this.state.user}
+              fetchUserSuits = {this.props.fetchUserSuits}
+              fetchUserOrientations = {this.props.fetchUserOrientations}
+              fetchAllSuits = {this.props.fetchAllSuits}
+              fetchAllOrientations = {this.props.fetchAllOrientations}
+              allSuits = {this.props.users.metrics.all_suits}
+              allOrientations = {this.props.users.metrics.all_orientations}
+              />           
+            </LoginWrapper>         
+          )}
+          />
           
           <Route
           path='/create_account'
@@ -190,6 +245,7 @@ const mapStateToProps = state => {
   return {
     cards: state.cards,
     readings: state.readings,
+    users: state.users, 
     loading: state.loading
   }
 }
@@ -199,7 +255,11 @@ const mapDispatchToProps = dispatch => ({
   deleteCard: cardObject => dispatch(deleteCard(cardObject)),
   fetchReadings: userId => dispatch(fetchReadings(userId)), 
   postReading: readingObject => dispatch(postReading(readingObject)),
-  deleteReading: readingObject => dispatch(deleteReading(readingObject))
+  deleteReading: readingObject => dispatch(deleteReading(readingObject)),
+  fetchUserSuits: userId => dispatch(fetchUserSuits(userId)),
+  fetchAllSuits: () => dispatch(fetchAllSuits()),
+  fetchUserOrientations: userId => dispatch(fetchUserOrientations(userId)),
+  fetchAllOrientations: () => dispatch(fetchAllOrientations())
 })
 
 

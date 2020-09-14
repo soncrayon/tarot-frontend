@@ -218,9 +218,9 @@ class CardDraw extends Component {
            </div>
            <div className="game_functions">
 
-            <button className="save_reading_button" onClick={this.saveReading}>Save This Reading</button>
+            <button className="save_reading_button" onClick={this.saveReading}>SAVE READING</button>
                 
-            <button className="clear_card_button" onClick={this.clearAllCards}>Refresh</button>
+            <button className="clear_card_button" onClick={this.clearAllCards}>REFRESH</button>
             </div>
         </div>
         )

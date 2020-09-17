@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import DetailedCardModal from '../components/detailedCardModal'
+import DetailedCardModal from '../../components/card_descriptions/detailedCardModal'
 
-class DetailedCardContainer extends Component {
+class CardDescriptions extends Component {
 
     state = {
         view: null, 
@@ -84,4 +84,4 @@ class DetailedCardContainer extends Component {
     }
 }
 
-export default DetailedCardContainer
+export default CardDescriptions

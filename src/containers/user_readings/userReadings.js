@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ReadingThumbnail from '../components/readingThumbnail'
-import FullReadingModal from '../components/fullReadingModal';
+import ReadingThumbnail from '../../components/user_readings/readingThumbnail'
+import FullReadingModal from '../../components/user_readings/fullReadingModal';
 
 class UserReadings extends Component {
 
@@ -31,6 +31,7 @@ class UserReadings extends Component {
       }
 
     render(){
+        console.log(this.props)
         return (
             <div className="user_readings_component" style={this.state.view}>
 

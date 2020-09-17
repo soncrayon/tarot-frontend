@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
-class LoginWrapper extends Component {
+class LoggedInWrapper extends Component {
     
     redirectToLogin = () => {
         this.props.history.push('/')
@@ -22,4 +22,4 @@ class LoginWrapper extends Component {
     }
 }
 
-export default withRouter(LoginWrapper)  
+export default withRouter(LoggedInWrapper)  

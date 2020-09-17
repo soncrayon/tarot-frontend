@@ -4,7 +4,7 @@ const CardBack = (props) => {
     return (
          <div className="card_back"> 
                <img 
-               src={require ("../ORI_Tarot_background.png")} 
+               src={require ("../../artwork/ORI_Tarot_background.png")} 
                alt="card back art"
                onClick={props.handleClick(props.card.period,"card_back")}
                ></img>

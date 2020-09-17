@@ -2,12 +2,12 @@
 
 import React, { Component } from 'react';
 import CardContainer from './cardContainer'
-import { getCardOrientation } from '../actions/getCardOrientation'
+import { getCardOrientation } from '../../components/home/getCardOrientation'
 
 class CardDraw extends Component {
     
-   constructor (props) {
-    super(props);
+   constructor () {
+    super();
     this.state = this.initialState;
    }
 

@@ -1,24 +1,8 @@
-const cards = (state = {cards: [], loading:false}, action) => {
-    switch (action.type) {
-       
-        case 'LOADING_CARDS':
-            return {
-                ...state, 
-                cards: [...state.cards],
-                loading:true
-            }
-        
-        case 'ADD_CARDS':
-           return {
-                ...state,
-                cards: action.cards,
-                loading:false
-            }
-
-        default:
-            return state
+export const cards = (state = [], action) => {
+    const storeStates = {
+        'LOADING_CARDS': state,
+        'ADD_CARDS': action.payload
     }
-
+    return typeof storeStates[action.type] !== "undefined" ? storeStates[action.type] : state 
 }
 
-export default cards

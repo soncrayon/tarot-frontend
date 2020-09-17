@@ -20,14 +20,14 @@ class Trends extends Component {
                     swords: typeof this.props.users.metrics.user_suits.swords !== "undefined" ? this.props.users.metrics.user_suits.swords : 0,
                     cups: typeof this.props.users.metrics.user_suits.cups !== "undefined" ? this.props.users.metrics.user_suits.cups : 0,
                     pentacles: typeof this.props.users.metrics.user_suits.pentacles !== "undefined" ? this.props.users.metrics.user_suits.pentacles : 0,
-                    major_arcana: typeof this.props.users.metrics.user_suits['major arcana'] !== "undefined" ? this.props.users.metrics.user_suits['major arcana'] : 0
+                    major_arcana: typeof this.props.users.metrics.user_suits.major_arcana !== "undefined" ? this.props.users.metrics.user_suits.major_arcana : 0
                 },
                 allSuits: {
                     wands: typeof this.props.users.metrics.all_suits.wands !== "undefined" ? this.props.users.metrics.all_suits.wands : 0,
                     swords: typeof this.props.users.metrics.all_suits.swords !== "undefined" ? this.props.users.metrics.all_suits.swords : 0,
                     cups: typeof this.props.users.metrics.all_suits.cups !== "undefined" ? this.props.users.metrics.all_suits.cups : 0,
                     pentacles: typeof this.props.users.metrics.all_suits.pentacles !== "undefined" ? this.props.users.metrics.all_suits.pentacles : 0,
-                    major_arcana: typeof this.props.users.metrics.all_suits['major arcana'] !== "undefined" ? this.props.users.metrics.all_suits['major arcana'] : 0
+                    major_arcana: typeof this.props.users.metrics.all_suits.major_arcana !== "undefined" ? this.props.users.metrics.all_suits.major_arcana : 0
                 }
             },
             orientationData: {

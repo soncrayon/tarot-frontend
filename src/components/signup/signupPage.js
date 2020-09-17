@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
-import LoginTitle from './loginTitle'
+import LoginTitle from '../login/loginTitle'
 
 class Signup extends Component {
 

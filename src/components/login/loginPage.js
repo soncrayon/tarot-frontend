@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import LoginTitle from './loginTitle'
 
@@ -16,26 +15,13 @@ class LoginPage extends Component {
       }
 
     handleSubmit =  (event) => {
+      let user = {
+        email: this.state.email,
+        password: this.state.password
+      }
         event.preventDefault()
-        const {email, password} = this.state
-        let user = {
-              email: email,
-              password: password
-            }
-            
-        axios.post('http://localhost:3001/login', {user}, {withCredentials: true})
-            .then(response => {
-              if (response.data.logged_in) {
-                this.props.handleLogin(response.data)
-                this.redirectToApp()
-              } else {
-                this.setState({
-                  errors: response.data.errors
-                })
-              }
-            })
-            .catch(error => console.log('api errors:', error))
-          };
+        this.props.loginUser(user)
+    };
     
 
     handleChange = (event) => {
@@ -46,31 +32,39 @@ class LoginPage extends Component {
         }))
     }
 
-    redirectToApp = () => {
-        this.props.history.push("/home");
-    }
-
     redirectToSignup = () => {
         this.props.history.push("/create_account"); 
     }
 
     handleErrors = () => {
-        return (
-          <div>
-            <ul>
-            {this.state.errors.map(error => {
-            return <li key={error}>{error}</li>
-              })}
-            </ul>
-          </div>
-        )
+      if (this.props.errors){
+          return (
+            <div>
+              <ul>
+              {this.props.errors.map(error => {
+              return <li key={error}>{error}</li>
+                })}
+              </ul>
+            </div>
+          )
       }
+      return null   
+    }
 
+
+    redirectToApp = () => {
+      if (this.props.loggedInStatus){
+          this.props.history.push("/home");
+      }
+    }
+
+      componentDidUpdate (prevProps){
+          this.redirectToApp()
+      }
 
     render(){
 
         const {email, password} = this.state
-
         return(
             <div className="credential_background">
               
@@ -113,7 +107,7 @@ class LoginPage extends Component {
                   <button onClick={this.redirectToSignup} className="create_account-button">SIGN UP</button>
 
                   <div>
-                      {this.state.errors ? this.handleErrors() : null}
+                      {this.handleErrors()}
                   </div>
                 </div>
 

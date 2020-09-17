@@ -1,74 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import axios from 'axios'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown} from '@fortawesome/free-solid-svg-icons'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
-import UserReadings from './containers/userReadings'
 import { fetchCards, deleteCard } from './actions/cardActions'
 import { fetchReadings, postReading, deleteReading } from './actions/readingActions'
-import { fetchUserSuits, fetchAllSuits, fetchUserOrientations, fetchAllOrientations } from './actions/userActions'
-import LoginPage from './components/loginPage';
-import LoginWrapper from './components/loginWrapper'
-import LandingPageWrapper from './components/landingPageWrapper'
-import Signup from './components/signupPage'
-import About from './components/About'
-import Home from './containers/home'
+import { fetchUserSuits, fetchAllSuits, fetchUserOrientations, fetchAllOrientations, loginUser, logoutUser } from './actions/userActions'
+import LoginPage from './components/login/loginPage';
+import LoggedInWrapper from './components/loggedInWrapper'
+import LoginPageWrapper from './components/loginPageWrapper'
+import Signup from './components/signup/signupPage'
 import AppTitle from './components/appTitle'
-import UserAccountMenu from './components/userAccountMenu'
-import DetailedCardContainer from './containers/detailedCardsContainer';
-import Trends from './containers/trends'
-import AccountSettings from './components/accountSettings'
-
+import Home from './containers/home/home'
+import UserReadings from './containers/user_readings/userReadings'
+import CardDescriptions from './containers/card_descriptions/cardDescriptions';
+import About from './components/about/About'
+import UserAccountMenu from './components/user_account_menu/userAccountMenu'
+import Trends from './containers/trends/trends'
+import AccountSettings from './components/user_account_menu/update_account/accountSettings'
 
 // using a library component from FontAwesome to hold icons for the applications components
 library.add(faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown)
 
 class App extends Component {   
-  
-  constructor(props) {
-    super(props);
+
+  constructor() {
+    super();
     this.state = { 
-      isLoggedIn: false,
-      user: null,
       user_account_menu_display: {display: 'none'}
      };
   }
-
-  handleLogin = (data) => {
-    this.setState({
-      ...this.state,
-      isLoggedIn: true,
-      user: data.user
-    })
-  }
- 
-  handleLogout = () => {
-      this.setState({
-      ...this.state,
-      isLoggedIn: false,
-      user: {}
-      })
-
-    axios.delete('http://localhost:3001/logout', {withCredentials: true})
-    .then(response => {
-      console.log()
-    })
-    .catch(error => console.log(error))
-    }
-
-    loginStatus = () => {
-      axios.get('http://localhost:3001/logged_in', 
-     {withCredentials: true})
-      .then(response => {
-        if (response.data.logged_in) {
-          this.handleLogin(response)
-        } else {
-          this.handleLogout()
-        }
-      })
-      .catch(error => console.log('api errors:', error))
-    }
 
     redirectToLogin = () => {
       this.props.history.push('/')
@@ -94,7 +55,6 @@ class App extends Component {
     }
  
   componentDidMount (){
-      this.loginStatus() 
       this.props.fetchCards()
       this.props.fetchAllSuits()
       this.props.fetchAllOrientations()
@@ -121,7 +81,7 @@ class App extends Component {
               <div className="nav_item"> <Link to="/" onClick={this.handleLogout}>LOGOUT</Link> </div>
           </div>
       
-          {this.state.user ? <UserAccountMenu user={this.state.user} toggleUserAccountMenu={this.toggleUserAccountMenu}/> : null} 
+          {this.props.user ? <UserAccountMenu user={this.props.user} toggleUserAccountMenu={this.toggleUserAccountMenu}/> : null} 
 
         </div>
 
@@ -136,96 +96,101 @@ class App extends Component {
           <Route
           path='/about'
           render={(props) => (
-            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
               <About {...props} />           
-            </LoginWrapper>
+            </LoggedInWrapper>
           )}
           />
 
           <Route
           path='/card_descriptions'
           render={(props) => (
-            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
-              <DetailedCardContainer {...props} cards={this.props.cards.cards} />           
-            </LoginWrapper>
+            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+              <CardDescriptions {...props} cards={this.props.cards} />           
+            </LoggedInWrapper>
           )}
           />
           
           <Route
           path='/home'
           render={(props) => (
-            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
               <Home 
                 {...props}
-                user={this.state.user}
-                cards={this.props.cards.cards} 
+                user={this.props.user}
+                cards={this.props.cards} 
                 postReading={this.props.postReading} 
                 fetchReadings ={this.props.fetchReadings}
                 deleteCard={this.deleteCard}
               />
-            </LoginWrapper>
+            </LoggedInWrapper>
           )}
           />
           
           <Route
           path='/user_readings'
           render={(props) => (
-            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
               <UserReadings 
               {...props} 
-              user={this.state.user} 
-              readings={this.props.readings.readings} 
+              user={this.props.user} 
+              readings={this.props.readings} 
               fetchReadings={this.props.fetchReadings} 
               deleteReading={this.props.deleteReading} 
               deleteCard={this.props.deleteCard} 
               />
-            </LoginWrapper>
+            </LoggedInWrapper>
           )}
           />
 
           <Route
           path='/account_settings'
           render={(props) => (
-            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
-              <AccountSettings {...props} user={this.state.user}
+            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+              <AccountSettings {...props} user={this.props.user}
               updateUserAfterAccountSettingsEdit = {this.updateUserAfterAccountSettingsEdit}
               />           
-            </LoginWrapper>
+            </LoggedInWrapper>
           )}
           />
 
           <Route
           path='/trends'
           render={(props) => (
-            <LoginWrapper loggedInStatus={this.state.isLoggedIn}>
+            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
               <Trends {...props} 
-              user={this.state.user}
+              user={this.props.user}
               fetchUserSuits = {this.props.fetchUserSuits}
               fetchUserOrientations = {this.props.fetchUserOrientations}
               fetchAllSuits = {this.props.fetchAllSuits}
               fetchAllOrientations = {this.props.fetchAllOrientations}
-              allSuits = {this.props.users.metrics.all_suits}
-              allOrientations = {this.props.users.metrics.all_orientations}
+              allSuits = {this.props.metrics.all_suits}
+              allOrientations = {this.props.metrics.all_orientations}
               />           
-            </LoginWrapper>         
+            </LoggedInWrapper>         
           )}
           />
           
           <Route
           path='/create_account'
           render={(props) => (
-            <LandingPageWrapper {...props}>
+            <LoginPageWrapper {...props}>
               <Signup {...props} handleLogin={this.handleLogin} />
-            </LandingPageWrapper>
+            </LoginPageWrapper>
           )}
           />
 
           <Route
           path='/'
           render={(props) => (
-            <LandingPageWrapper {...props}>
-              <LoginPage {...props} handleLogin={this.handleLogin} user={this.state.user} fetchReadings={this.props.fetchReadings}/>
-            </LandingPageWrapper>
+            <LoginPageWrapper {...props}>
+              <LoginPage {...props} 
+              handleLogin={this.handleLogin} 
+              loggedInStatus={this.props.isLoggedIn} 
+              user={this.props.user} errors={this.props.errors} 
+              fetchReadings={this.props.fetchReadings} 
+              loginUser={this.props.loginUser}/>
+            </LoginPageWrapper>
           
           )}
           />
@@ -245,12 +210,16 @@ const mapStateToProps = state => {
   return {
     cards: state.cards,
     readings: state.readings,
-    users: state.users, 
-    loading: state.loading
+    user: state.users.user, 
+    isLoggedIn: state.users.isLoggedIn,
+    errors: state.users.errors,
+    metrics: state.users.metrics 
   }
 }
 
 const mapDispatchToProps = dispatch => ({
+  loginUser: user => dispatch(loginUser(user)),
+  logoutUser: () => dispatch(logoutUser()),
   fetchCards: () => dispatch(fetchCards()),
   deleteCard: cardObject => dispatch(deleteCard(cardObject)),
   fetchReadings: userId => dispatch(fetchReadings(userId)), 

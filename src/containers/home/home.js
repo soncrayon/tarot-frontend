@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import CardDraw from './cardDraw'
-import GoverningCard from '../components/governingCard'
+import GoverningCard from '../../components/home/governingCard'
 
 class Home extends Component {
     
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state = {
             governingCard: null 
         }
     }
 
-    // needed to set te governing card in the did mount part of lifecyle to prevent it updating every time the home component did 
+    // needed to set the governing card in the did mount part of lifecyle to prevent it updating every time the home component did 
     componentDidMount (){
         return (
             this.setState({

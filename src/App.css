@@ -38,7 +38,7 @@ html, body {
 }
 
 .credential_background::after {
-  background-image: url('ORI_Tarot_background.png');
+  background-image: url('./artwork/ORI_Tarot_background.png');
   content: ' ';
   display: block;
   position: absolute;

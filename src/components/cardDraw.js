@@ -154,8 +154,8 @@ class CardDraw extends Component {
         this.clearAllCards()
     }
 
-    saveReading = async () => {
-        await this.props.postReading(this.state.reading)
+    saveReading =  () => {
+        this.props.postReading(this.state.reading)
         this.updateAppAfterReadingSubmission()
     }
 

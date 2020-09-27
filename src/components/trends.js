@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ArcanaTrend } from './arcanaTrend'
 import { OrientationTrend } from './orientationTrend'
 
-class ArcanaTrends extends Component {
+class Trends extends Component {
 
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         this.props.fetchUserArcana(this.props.user.id)
         this.props.fetchUserOrientations(this.props.user.id)
         this.props.fetchAllArcana()
@@ -171,4 +171,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ArcanaTrends)
+export default connect(mapStateToProps)(Trends)

@@ -32,8 +32,8 @@ class FullReadingModal extends Component {
             <h2>{this.props.reading.date_time_created}</h2> 
 
                 <div className="full_reading">
-                    {this.props.reading.cards.map(card => {
-                        return <FullReadingCard card={card} getCardImageOrientation={this.getCardImageOrientation}/>
+                    {this.props.reading.cards.map((card, index) => {
+                        return <FullReadingCard key={index} card={card} getCardImageOrientation={this.getCardImageOrientation}/>
                     })}
 
                 </div>

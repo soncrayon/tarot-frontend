@@ -16,7 +16,7 @@ import UserReadings from './components/userReadings'
 import CardDescriptionLists from './components/cardDescriptionLists';
 import { About } from './components/About'
 import UserAccountMenu from './components/userAccountMenu'
-import ArcanaTrends from './components/arcanaTrends'
+import Trends from './components/trends'
 import AccountSettings from './components/accountSettings'
 
 library.add(faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown)
@@ -176,7 +176,7 @@ class App extends Component {
           path='/trends'
           render={(props) => (
             <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <ArcanaTrends {...props} 
+              <Trends {...props} 
               user={this.props.user}
               fetchUserArcana = {this.props.fetchUserArcana}
               fetchUserOrientations = {this.props.fetchUserOrientations}

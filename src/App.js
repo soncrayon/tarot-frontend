@@ -3,23 +3,22 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown} from '@fortawesome/free-solid-svg-icons'
-import { fetchCards, deleteCard } from './actions/cardActions'
+import { fetchCards } from './actions/cardActions'
 import { fetchReadings, postReading, deleteReading } from './actions/readingActions'
-import { fetchUserSuits, fetchAllSuits, fetchUserOrientations, fetchAllOrientations, loginUser, logoutUser } from './actions/userActions'
-import LoginPage from './components/login/loginPage';
+import { fetchUserArcana, fetchAllArcana, fetchUserOrientations, fetchAllOrientations, loginUser, logoutUser, createUserAccount, deleteUserAccount, updateUserAccount } from './actions/userActions'
+import LoginPage from './components/loginPage';
 import LoggedInWrapper from './components/loggedInWrapper'
 import LoginPageWrapper from './components/loginPageWrapper'
-import Signup from './components/signup/signupPage'
-import AppTitle from './components/appTitle'
-import Home from './containers/home/home'
-import UserReadings from './containers/user_readings/userReadings'
-import CardDescriptions from './containers/card_descriptions/cardDescriptions';
-import About from './components/about/About'
-import UserAccountMenu from './components/user_account_menu/userAccountMenu'
-import Trends from './containers/trends/trends'
-import AccountSettings from './components/user_account_menu/update_account/accountSettings'
+import Signup from './components/signupPage'
+import { AppTitle } from './components/appTitle'
+import Home from './components/home'
+import UserReadings from './components/userReadings'
+import CardDescriptionLists from './components/cardDescriptionLists';
+import { About } from './components/About'
+import UserAccountMenu from './components/userAccountMenu'
+import ArcanaTrends from './components/arcanaTrends'
+import AccountSettings from './components/accountSettings'
 
-// using a library component from FontAwesome to hold icons for the applications components
 library.add(faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown)
 
 class App extends Component {   
@@ -53,10 +52,28 @@ class App extends Component {
         user: data
       })
     }
+
+    logOutAndClear = () => {
+      this.setState({
+        ...this.state,
+        user_account_menu_display: {display: 'none'}
+      })
+      this.props.logoutUser()
+    }
+
+    deleteAndClear = (userId) => {
+      this.setState({
+        ...this.state,
+        user_account_menu_display: {display: 'none'}
+      })
+      if (window.confirm('Are you sure you want to delete your account?')) {
+        this.props.deleteUserAccount(userId)
+      }
+    }
  
   componentDidMount (){
       this.props.fetchCards()
-      this.props.fetchAllSuits()
+      this.props.fetchAllArcana()
       this.props.fetchAllOrientations()
     }
 
@@ -68,19 +85,19 @@ class App extends Component {
     <Router>
 
       <div className="App">
-   
+
         <div className="app_nav">
 
           <AppTitle />
-          
+
           <div className="menu_container">
-              <div className="nav_item"> <Link to="/home">HOME</Link> </div>
-              <div className="nav_item"> <Link to="/user_readings">YOUR READINGS</Link> </div>
-              <div className="nav_item"> <Link to="/card_descriptions">CARD DESCRIPTIONS</Link></div>
-              <div className="nav_item"> <Link to="/about">ABOUT</Link> </div>
-              <div className="nav_item"> <Link to="/" onClick={this.handleLogout}>LOGOUT</Link> </div>
+            <div className="nav_item"> <Link to="/home">HOME</Link> </div>
+            <div className="nav_item"> <Link to="/user_readings">YOUR READINGS</Link> </div>
+            <div className="nav_item"> <Link to="/card_descriptions">CARD DESCRIPTIONS</Link></div>
+            <div className="nav_item"> <Link to="/about">ABOUT</Link> </div>
+            <div className="nav_item"> <Link to="/" onClick={() => this.logOutAndClear()}>LOGOUT</Link> </div>
           </div>
-      
+
           {this.props.user ? <UserAccountMenu user={this.props.user} toggleUserAccountMenu={this.toggleUserAccountMenu}/> : null} 
 
         </div>
@@ -88,6 +105,7 @@ class App extends Component {
         <div className="user_account_menu_options" style={this.state.user_account_menu_display}>
             <div><Link to="/trends" onClick={() => this.toggleUserAccountMenu()}>YOUR TRENDS</Link></div>
             <div><Link to="/account_settings" onClick={() => this.toggleUserAccountMenu()}>ACCOUNT SETTINGS</Link></div>
+            {this.props.user ?   <div><Link to="/" onClick={() => this.deleteAndClear(this.props.user.id)}>DELETE ACCOUNT</Link></div> : null}
         </div>
       
         
@@ -106,7 +124,7 @@ class App extends Component {
           path='/card_descriptions'
           render={(props) => (
             <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <CardDescriptions {...props} cards={this.props.cards} />           
+              <CardDescriptionLists {...props} cards={this.props.cards} />           
             </LoggedInWrapper>
           )}
           />
@@ -121,7 +139,6 @@ class App extends Component {
                 cards={this.props.cards} 
                 postReading={this.props.postReading} 
                 fetchReadings ={this.props.fetchReadings}
-                deleteCard={this.deleteCard}
               />
             </LoggedInWrapper>
           )}
@@ -137,7 +154,6 @@ class App extends Component {
               readings={this.props.readings} 
               fetchReadings={this.props.fetchReadings} 
               deleteReading={this.props.deleteReading} 
-              deleteCard={this.props.deleteCard} 
               />
             </LoggedInWrapper>
           )}
@@ -147,8 +163,10 @@ class App extends Component {
           path='/account_settings'
           render={(props) => (
             <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <AccountSettings {...props} user={this.props.user}
+              <AccountSettings {...props} 
+              user={this.props.user}
               updateUserAfterAccountSettingsEdit = {this.updateUserAfterAccountSettingsEdit}
+              updateUserAccount = {this.props.updateUserAccount}
               />           
             </LoggedInWrapper>
           )}
@@ -158,13 +176,13 @@ class App extends Component {
           path='/trends'
           render={(props) => (
             <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <Trends {...props} 
+              <ArcanaTrends {...props} 
               user={this.props.user}
-              fetchUserSuits = {this.props.fetchUserSuits}
+              fetchUserArcana = {this.props.fetchUserArcana}
               fetchUserOrientations = {this.props.fetchUserOrientations}
-              fetchAllSuits = {this.props.fetchAllSuits}
+              fetchAllArcana = {this.props.fetchAllArcana}
               fetchAllOrientations = {this.props.fetchAllOrientations}
-              allSuits = {this.props.metrics.all_suits}
+              allArcana = {this.props.metrics.all_arcana}
               allOrientations = {this.props.metrics.all_orientations}
               />           
             </LoggedInWrapper>         
@@ -175,7 +193,12 @@ class App extends Component {
           path='/create_account'
           render={(props) => (
             <LoginPageWrapper {...props}>
-              <Signup {...props} handleLogin={this.handleLogin} />
+              <Signup {...props} 
+              createUserAccount={this.props.createUserAccount}
+              user={this.props.user}
+              errors={this.props.signup_errors}
+              loggedInStatus={this.props.isLoggedIn}
+              />
             </LoginPageWrapper>
           )}
           />
@@ -185,9 +208,9 @@ class App extends Component {
           render={(props) => (
             <LoginPageWrapper {...props}>
               <LoginPage {...props} 
-              handleLogin={this.handleLogin} 
               loggedInStatus={this.props.isLoggedIn} 
-              user={this.props.user} errors={this.props.errors} 
+              user={this.props.user} 
+              errors={this.props.login_errors} 
               fetchReadings={this.props.fetchReadings} 
               loginUser={this.props.loginUser}/>
             </LoginPageWrapper>
@@ -212,21 +235,24 @@ const mapStateToProps = state => {
     readings: state.readings,
     user: state.users.user, 
     isLoggedIn: state.users.isLoggedIn,
-    errors: state.users.errors,
+    login_errors: state.users.login_errors,
+    signup_errors: state.users.signup_errors,
     metrics: state.users.metrics 
   }
 }
 
 const mapDispatchToProps = dispatch => ({
+  createUserAccount: user => dispatch(createUserAccount(user)),
+  updateUserAccount: user => dispatch(updateUserAccount(user)),
+  deleteUserAccount: userId => dispatch(deleteUserAccount(userId)),
   loginUser: user => dispatch(loginUser(user)),
   logoutUser: () => dispatch(logoutUser()),
   fetchCards: () => dispatch(fetchCards()),
-  deleteCard: cardObject => dispatch(deleteCard(cardObject)),
   fetchReadings: userId => dispatch(fetchReadings(userId)), 
   postReading: readingObject => dispatch(postReading(readingObject)),
   deleteReading: readingObject => dispatch(deleteReading(readingObject)),
-  fetchUserSuits: userId => dispatch(fetchUserSuits(userId)),
-  fetchAllSuits: () => dispatch(fetchAllSuits()),
+  fetchUserArcana: userId => dispatch(fetchUserArcana(userId)),
+  fetchAllArcana: () => dispatch(fetchAllArcana()),
   fetchUserOrientations: userId => dispatch(fetchUserOrientations(userId)),
   fetchAllOrientations: () => dispatch(fetchAllOrientations())
 })

@@ -11,7 +11,6 @@ class LoggedInWrapper extends Component {
         return this.props.loggedInStatus ? null : this.redirectToLogin()
     }
     
-    // check login status again in the render function to prevent app from reading undefined props (like cards) that haven't been fetched yet
     render(){
         return this.props.loggedInStatus ? 
          (

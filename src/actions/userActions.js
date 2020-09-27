@@ -1,8 +1,3 @@
-// export const postUser = (readingObj) => { 
-// //    try to transition the axios material from axios to use the store (not sure if it will work so keep axios material commented out)
-//     console.log('finish this')
-// }
-
 export const loginUser = (user) => { 
     console.log(user)
     return(dispatch) => {
@@ -22,7 +17,6 @@ export const loginUser = (user) => {
                 } 
                 return dispatch({type: 'LOGIN_FAILED', payload: resp})
             })
-            .catch(error => console.log(error))
     }
 }
 
@@ -33,21 +27,78 @@ export const logoutUser = () => {
             method: 'DELETE',
             withCredentials: true
         })
-            .then(resp => resp.json())
-            .then(resp => {
-                   return dispatch({type: 'LOG_OUT_USER'})
-                })
-            .catch(error => console.log(error))
+            .then(() => {return dispatch({type: 'LOG_OUT_USER'})})
     }
 }
 
-export const fetchUserSuits = (userId) => {
+export const createUserAccount = (user) => {
+    return (dispatch) => {
+        dispatch({type: 'CREATING_USER_ACCOUNT'});
+        fetch('http://localhost:3001/users', {
+            method: 'POST',
+            body: JSON.stringify({user}),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+            .then(resp => resp.json())
+            .then(resp => {
+                if (resp.status === 'created') {
+                    return dispatch({type: 'ACCOUNT_CREATED', payload: resp})
+                }
+                return dispatch({type: 'ACCOUNT_CREATION_FAILED', payload: resp})
+            })
+    }
+}
+
+export const updateUserAccount = (user) => {
+    return (dispatch) => {
+        dispatch({type: 'UPDATING_USER_ACCOUNT'});
+        fetch(`http://localhost:3001/users/${user.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({user}),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+        .then(resp => resp.json())
+        .then(resp => {
+            return dispatch({type: 'ACCOUNT_UPDATED', payload: resp})
+        })
+    }
+}
+
+export const deleteUserAccount = (userId) => {
+    return (dispatch) => {
+        dispatch({type: 'DELETING_USER_ACCOUNT'});
+
+        fetch('http://localhost:3001/logout', {
+            method: 'DELETE',
+            withCredentials: true
+        })
+            .then(() => {
+
+                fetch(`http://localhost:3001/users/${userId}`, {
+                    method: 'DELETE'
+                })
+                .then(resp => resp.json())
+                .then(resp => {
+                    if (resp.status === 'deleted') {
+                        return dispatch({type: 'ACCOUNT_DELETED'})
+                    }
+                })
+
+            })
+    }
+}
+
+export const fetchUserArcana = (userId) => {
     return (dispatch) => {
         dispatch({type:'LOADING_METRICS'});
-        fetch(`http://localhost:3001/user_suit_percentages/${userId}`)
+        fetch(`http://localhost:3001/user_arcana_percentages/${userId}`)
             .then(resp => resp.json())
             .then(resp => { 
-                dispatch({type:'ADD_USER_SUITS', payload: resp})
+                dispatch({type:'ADD_USER_ARCANA', payload: resp})
             })
     }
 }
@@ -62,15 +113,15 @@ export const fetchUserOrientations = (userId) => {
             })
     }
 }
+ 
 
-
-export const fetchAllSuits = () => {
+export const fetchAllArcana = () => {
     return (dispatch) => {
         dispatch({type:'LOADING_METRICS'});
-        fetch(`http://localhost:3001/all_suit_percentages`)
+        fetch(`http://localhost:3001/all_arcana_percentages`)
             .then(resp => resp.json())
             .then(resp => { 
-                dispatch({type:'ADD_ALL_SUITS', payload: resp})
+                dispatch({type:'ADD_ALL_ARCANA', payload: resp})
             })
     }
 }

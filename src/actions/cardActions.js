@@ -9,15 +9,6 @@ export const fetchCards = () => {
     }
 }
 
-export const deleteCard = (cards) => {
-    return (dispatch) => {
-        dispatch({type: 'DELETING_CARDS'});
-        fetch(`http://localhost:3001/cards/${cards[0].id},${cards[1].id},${cards[2].id}`, {
-            method: 'DELETE'
-        })
-    }
-}
-
 
 
 

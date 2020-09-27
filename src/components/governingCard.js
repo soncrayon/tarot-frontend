@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GoverningCard = (props) => {
+export const GoverningCard = (props) => {
     
     return (
         <div>
@@ -12,4 +12,3 @@ const GoverningCard = (props) => {
     )
 }
 
-export default GoverningCard

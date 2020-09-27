@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import ReactCardFlip from 'react-card-flip';
-import CardBack from './cardBack'
-import CardFront from './cardFront'
+import { CardBack } from './cardBack'
+import { CardFront } from './cardFront'
 
 class Card extends Component {
 
-    constructor(props){
-        super(props)
+    constructor(){
+        super()
         this.state = {
         isFlipped: true 
         }

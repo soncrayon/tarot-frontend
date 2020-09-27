@@ -1,8 +1,6 @@
-// 6SEP2020 NEED TO ENSURE USERS CAN'T SAVE A READING WITH JUST ONE OR TWO CARDS
-
 import React, { Component } from 'react';
-import CardContainer from './cardContainer'
-import { getCardOrientation } from '../../components/home/getCardOrientation'
+import { CardAndInfo } from './cardAndInfo'
+import { getCardOrientation } from './getCardOrientation'
 
 class CardDraw extends Component {
     
@@ -11,8 +9,6 @@ class CardDraw extends Component {
     this.state = this.initialState;
    }
 
-//  this getter function sets the initial attributes for all the cards which are just empty strings at this point
-//  it also adds a card_refresh key to add more control in re-displaying the cardBack component when cards are refreshed 
    get initialState() {
 
         let cardAttributes = {
@@ -22,7 +18,6 @@ class CardDraw extends Component {
             image: '',
             orientation: '',
             id: '',
-            reading_id: '',
             user_id:''
         }
        return {
@@ -46,7 +41,6 @@ class CardDraw extends Component {
        }
    }
 
-// once the new attributes are derived from the new card picked at random, state is updated with that information
    updateStateWithDrawnCard = (newCardAtrributes) => {
     
     const updatedCardState = {
@@ -81,7 +75,6 @@ class CardDraw extends Component {
 
     }
    
-    // set newCardAttributes object from drawnCard object to match api variables to application attributes; pass object to update state function
    setCardAttributes = (drawnCard, period) => {
        let newCardAtrributes = {
         period: period, 
@@ -92,14 +85,10 @@ class CardDraw extends Component {
         image: drawnCard.image,
         orientation: getCardOrientation(),
         id: drawnCard.id,
-        reading_id: '',
         user_id: this.props.user.id
      }
      this.updateStateWithDrawnCard(newCardAtrributes)
    }
-
-   
-//    set an array to hold card ids to check for duplication 
 
    setCardDeduplicationArray = () => {
         return Object.entries(this.state.reading).map(([period, value]) => {
@@ -107,7 +96,6 @@ class CardDraw extends Component {
         })
    }
 
-//  pick a card at random from card objects in redux store; check the id to ensure that the card does not match a card that was already drawn 
     drawCard = (period) => {
         let drawnCard
 
@@ -119,7 +107,6 @@ class CardDraw extends Component {
         this.setCardAttributes(drawnCard, period)
     }
    
-    // this function will choose the appropriate card based on the passed-in period and reset it to its initial state 
     deleteCard = (period) => {
 
         const resetCardState = {
@@ -153,41 +140,40 @@ class CardDraw extends Component {
 
     }
 
-// fetch updated readings
-// this forces an update to state so that new readings are reflected immediately in the app 
     updateStateWithNewReading = () => {
         this.setState(this.props.fetchReadings(this.props.user.id))
     }
 
-// clear card spread 
     clearAllCards = () => {
         this.setState({...this.initialState, card_refresh: prevState => !prevState.card_refresh})
         this.updateStateWithNewReading()
     }
 
-// notify user of successful submission 
     updateAppAfterReadingSubmission = () => {
         alert('You have successfully submitted your reading.  Click readings in the menu to view.')
         this.clearAllCards()
     }
 
-// post the reading to the backend 
     saveReading = async () => {
         await this.props.postReading(this.state.reading)
         this.updateAppAfterReadingSubmission()
+    }
+
+    validateCards = () => {
+        return this.state.reading.past.name.length &&
+        this.state.reading.present.name.length &&
+        this.state.reading.future.name.length
     }
   
     render(){
         return (
         <div className="CardDraw">   
-
-        <p>Draw your cards. Click each card below to reveal your reading.</p>
-            
+      
             <div className="card_row">
           
                 <div className="card_container">
                     <h2>Past</h2> 
-                    <CardContainer 
+                    <CardAndInfo 
                     card={this.state.reading.past} 
                     drawCard={this.drawCard} 
                     deleteCard={this.deleteCard}
@@ -197,7 +183,7 @@ class CardDraw extends Component {
 
                 <div className="card_container">
                     <h2>Present</h2>
-                    <CardContainer 
+                    <CardAndInfo 
                     card={this.state.reading.present} 
                     drawCard={this.drawCard} 
                     deleteCard={this.deleteCard}
@@ -207,7 +193,7 @@ class CardDraw extends Component {
 
                 <div className="card_container">
                     <h2>Future</h2> 
-                    <CardContainer 
+                    <CardAndInfo 
                     card={this.state.reading.future} 
                     drawCard={this.drawCard} 
                     deleteCard={this.deleteCard}
@@ -218,7 +204,7 @@ class CardDraw extends Component {
            </div>
            <div className="game_functions">
 
-            <button className="save_reading_button" onClick={this.saveReading}>SAVE READING</button>
+            <button className="save_reading_button" onClick={this.saveReading} disabled={!this.validateCards()}>SAVE READING</button>
                 
             <button className="clear_card_button" onClick={this.clearAllCards}>REFRESH</button>
             </div>

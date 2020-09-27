@@ -1,5 +1,27 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# ORI Tarot
+
+ORI Tarot is an application where users can create 3-card spread tarot readings.  Users can save their readings for later viewing and even see overall trends in all their readings to date.  Lastly, the application makes available a general list of cards in the tarot deck along with more detailed descriptions of each.  
+
+## Using ORI Tarot
+
+This is a two-part application.  To use ORI Tarot, pull down a copy of this tarot-frontend portion along with the tarot-backend portion.  Run "rails s" to start the backend Rails API server in tarot-backend and then run "npm start" in the tarot-frontend portion.  
+
+Users can then login or create an account from the landing page.  Once logged in, users can create readings right away by flipping the cards on the home page and saving readings.  
+
+User Readings provides a repository of all saved readings.  Click a reading to view all the cards from that reading or have the option to delete it.  
+
+Card Descriptions provides a list of all tarot cards n the deck categorized by major and minor arcana.  
+
+Click your name in the upper right to access options to view your trends (and aggregate data for all users) or to edit your account information.  You can also delete your account from the user menu.  
+
+## Dependencies/Attributions
+
+ORI Tarot makes use of the CardFlip and FontAwesome libraries for React.  Card images and information are courtesy of the Hawl Tarot API.  Certain background and card art is courtesy of Google Images.  
+
+## See below for additional README information made available via Create React App:  
+
 ## Available Scripts
 
 In the project directory, you can run:

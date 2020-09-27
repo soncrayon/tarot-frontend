@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import LoginTitle from './loginTitle'
+import { LoginTitle } from './loginTitle'
 
 class LoginPage extends Component {
 
@@ -58,7 +58,7 @@ class LoginPage extends Component {
       }
     }
 
-      componentDidUpdate (prevProps){
+      componentDidUpdate (){
           this.redirectToApp()
       }
 

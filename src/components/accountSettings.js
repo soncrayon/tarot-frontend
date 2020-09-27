@@ -1,54 +1,43 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 
 class AccountSettings extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { 
       first_name: '',
       last_name: '',
       email: '',
-      password: '',
-      errors: ''
+      password: ''
      };
   }
 
 
 validateForm = () => {
-  return this.state.first_name.length && 
-  this.state.last_name.length &&
-  this.state.email.length && 
+  return this.state.first_name.length || 
+  this.state.last_name.length ||
+  this.state.email.length ||
   this.state.password.length;
 }
 
   handleChange = (event) => {
     const {id, value} = event.target
-    this.setState({
+    this.setState(prevState => ({
+      ...prevState,
       [id]: value
-    })
+    }))
   };
 
 handleSubmit = (event) => {
     event.preventDefault()
     let user = {
+      id: this.props.user.id, 
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password.length ? this.state.password : this.props.user.password 
     }
-  axios.put(`http://localhost:3001/users/${this.props.user.id}`, {user})
-    .then(response => {
-      if (response.data.status === 'updated') {
-        this.successfulAccountUpdate()
-        this.props.updateUserAfterAccountSettingsEdit(response.data.user)
-      } else {
-        this.setState({
-          errors: response.data.errors
-        })
-      }
-    })
-    .catch(error => console.log('api errors:', error))
+    this.props.updateUserAccount(user)
   };
 
 successfulAccountUpdate = () => {
@@ -63,15 +52,25 @@ successfulAccountUpdate = () => {
   }
 
 handleErrors = () => {
-    return (
-      <div>
-        <ul>{this.state.errors.map((error) => {
-          return <li key={error}>{error}</li>
-        })}
-        </ul> 
-      </div>
-    )
+  if (this.props.errors){
+      return (
+        <div>
+          <ul>{this.props.errors.map((error) => {
+            return <li key={error}>{error}</li>
+          })}
+          </ul> 
+        </div>
+      )
+    }
+  return null 
   }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.user !== this.props.user) {
+          this.successfulAccountUpdate()
+    }
+  }
+
 
 render() {
 
@@ -81,11 +80,11 @@ render() {
              <div className="update_account">
 
               <h2>Update Your Account Information</h2>
-              <p>Update by editing the form below or you can delete your account.</p>
+              <p>Update by editing the form below.</p>
 
               <form className="update_account_form" onSubmit={this.handleSubmit}>
               <input
-                  placeholder={this.props.user.first_name}
+                  placeholder={this.props.user.first_name ? this.props.user.first_name : null}
                   type="text"
                   id="first_name"
                   className="update_input"
@@ -94,7 +93,7 @@ render() {
                 />
                 <br></br>
               <input
-                  placeholder={this.props.user.last_name}
+                  placeholder={this.props.user.last_name ? this.props.user.last_name : null}
                   type="text"
                   id="last_name"
                   className="update_input"
@@ -103,7 +102,7 @@ render() {
                 />
                 <br></br>
                 <input
-                  placeholder={this.props.user.email}
+                  placeholder={this.props.user.email ? this.props.user.email : null}
                   type="text"
                   id="email"
                   className="update_input"
@@ -132,7 +131,7 @@ render() {
               </form>
 
               <div>
-                {this.state.errors ? this.handleErrors() : null}
+                {this.handleErrors()}
               </div>
             </div>
 

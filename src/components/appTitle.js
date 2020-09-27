@@ -1,10 +1,9 @@
 import React from 'react'
 
-const AppTitle = (props) => (
+export const AppTitle = () => (
     <div className="app_title"> 
         <p>ORI TAROT</p>
     </div>    
 )
 
-export default AppTitle 
  

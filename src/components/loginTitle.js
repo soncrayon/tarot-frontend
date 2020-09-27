@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LoginTitle = () => {
+export const LoginTitle = () => {
     return (
         <div className="login_title">
             <p className="main_title">ORI</p>
@@ -9,4 +9,3 @@ const LoginTitle = () => {
     )
 }
 
-export default LoginTitle

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ReadingThumbnail from '../../components/user_readings/readingThumbnail'
-import FullReadingModal from '../../components/user_readings/fullReadingModal';
+import ReadingThumbnail from './readingThumbnail'
+import FullReadingModal from './fullReadingModal';
 
 class UserReadings extends Component {
 
@@ -30,8 +30,13 @@ class UserReadings extends Component {
         this.props.fetchReadings(this.props.user.id)
       }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.readings.length !== this.props.readings.length){
+            this.props.fetchReadings(this.props.user.id)
+        }
+    }
+
     render(){
-        console.log(this.props)
         return (
             <div className="user_readings_component" style={this.state.view}>
 

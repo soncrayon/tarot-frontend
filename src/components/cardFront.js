@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CardFront = (props) => {
+export const CardFront = (props) => {
 
     const cardDisplay = {
         upright: <div className="card_front">
@@ -26,4 +26,3 @@ const CardFront = (props) => {
     return cardDisplay[props.card.orientation] || null 
 }
 
-export default CardFront

@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 import { withRouter } from 'react-router-dom'
-import LoginTitle from '../login/loginTitle'
+import { LoginTitle } from './loginTitle'
 
 class Signup extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { 
       first_name: '',
       last_name: '',
       email: '',
       password: '',
-      errors: ''
      };
   }
 
@@ -32,18 +30,7 @@ handleSubmit = (event) => {
       email: email,
       password: password
     }
-  axios.post('http://localhost:3001/users', {user}, {withCredentials: true})
-    .then(response => {
-      if (response.data.status === 'created') {
-        this.props.handleLogin(response.data)
-        this.redirectToApp()
-      } else {
-        this.setState({
-          errors: response.data.errors
-        })
-      }
-    })
-    .catch(error => console.log('api errors:', error))
+    this.props.createUserAccount(user)
   };
 
   redirectToSignin = () => {
@@ -56,14 +43,25 @@ handleSubmit = (event) => {
   }
 
 handleErrors = () => {
-    return (
-      <div>
-        <ul>{this.state.errors.map((error) => {
-          return <li key={error}>{error}</li>
-        })}
-        </ul> 
-      </div>
-    )
+  if (this.props.errors) {
+      return (
+        <div>
+          <ul>{this.props.errors.map((error) => {
+            return <li key={error}>{error}</li>
+          })}
+          </ul> 
+        </div>
+      )
+    }
+  return null 
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.loggedInStatus !== this.props.loggedInStatus) {
+        if (this.props.loggedInStatus === true) {
+          this.redirectToApp()
+        }
+    }
   }
 
 render() {
@@ -127,7 +125,9 @@ return (
               <button onClick={this.redirectToSignin} className="link">RETURN TO LOGIN</button>
 
               <div>
-                {this.state.errors ? this.handleErrors() : null}
+
+                {this.handleErrors()}
+
               </div>
             </div>
 

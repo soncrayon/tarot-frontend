@@ -30,8 +30,8 @@ class App extends Component {
      };
   }
 
-    redirectToLogin = () => {
-      this.props.history.push('/')
+    redirectToLoginIfUserDeleted = () => { 
+        window.location = 'http://localhost:3000'
     }
 
     toggleUserAccountMenu = () => {
@@ -77,6 +77,13 @@ class App extends Component {
       this.props.fetchAllOrientations()
     }
 
+  componentDidUpdate(){
+      if (this.props.deleted === true) {
+        this.redirectToLoginIfUserDeleted()
+      }
+  }
+
+
   render() {
     
     return (
@@ -105,7 +112,7 @@ class App extends Component {
         <div className="user_account_menu_options" style={this.state.user_account_menu_display}>
             <div><Link to="/trends" onClick={() => this.toggleUserAccountMenu()}>YOUR TRENDS</Link></div>
             <div><Link to="/account_settings" onClick={() => this.toggleUserAccountMenu()}>ACCOUNT SETTINGS</Link></div>
-            {this.props.user ?   <div><Link to="/" onClick={() => this.deleteAndClear(this.props.user.id)}>DELETE ACCOUNT</Link></div> : null}
+            {this.props.user ?   <div><Link to="#" onClick={() => this.deleteAndClear(this.props.user.id)}>DELETE ACCOUNT</Link></div> : null}
         </div>
       
         
@@ -237,6 +244,7 @@ const mapStateToProps = state => {
     isLoggedIn: state.users.isLoggedIn,
     login_errors: state.users.login_errors,
     signup_errors: state.users.signup_errors,
+    deleted: state.users.deleted,
     metrics: state.users.metrics 
   }
 }

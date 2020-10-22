@@ -1,5 +1,4 @@
 export const loginUser = (user) => { 
-    console.log(user)
     return(dispatch) => {
         dispatch({type: 'LOGGING_IN_USER'});
         fetch('http://localhost:3001/login', {

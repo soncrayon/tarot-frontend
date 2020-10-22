@@ -2,6 +2,7 @@ export const users = (state = {
     isLoggedIn: false,
     login_errors: null,
     signup_errors: null,
+    deleted: false,
     user: null,
     metrics: {
         user_arcana: {},
@@ -20,7 +21,7 @@ export const users = (state = {
         'UPDATING_USER_ACCOUNT': {...state},
         'ACCOUNT_UPDATED': {...state, user: user},
         'DELETING_USER_ACCOUNT': {...state},
-        'ACCOUNT_DELETED': {...state, isLoggedIn: false, user: null}, 
+        'ACCOUNT_DELETED': {...state, isLoggedIn: false, user: null, deleted: true}, 
         'LOGGING_IN_USER': {...state},
         'LOGGING_OUT_USER': {...state},
         'LOGIN_SUCCESSFUL': {...state, isLoggedIn: true, login_errors: null, user: user},

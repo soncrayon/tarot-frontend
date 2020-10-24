@@ -1,34 +1,37 @@
 import React from 'react'
+import { VictoryPie } from 'victory';
 
 export const OrientationTrend = (props) => {
+
+    let orientationDataForPie
+    
+    if (props.orientationCardData.upright > 0 ||
+        props.orientationCardData.reversed > 0) {
+            orientationDataForPie = [
+                {x: `Upright ${props.orientationCardData.upright}%`, y: props.orientationCardData.upright},
+                {x: `Reversed ${props.orientationCardData.reversed}%`, y: props.orientationCardData.reversed}
+            ]
+    } else { 
+        orientationDataForPie =[{
+            x: "No data for visualization yet. Go draw some cards!"
+        }]
+    }
+
     return (
         <div className="trend_block_data">
             <div className="trend_block_figures">
-                <div className="trend_block_figures_title"><h3>Orientation Percentages</h3></div>
                 <div className="trend_block_figures_key">
-                
-                    <div className="bar_div">
-                        <div className="bar_value">
-                            Upright: {props.orientationCardData.upright}%
-                        </div>
-                        <div className="bar_rep" style={{width: `${props.orientationCardData.upright}%`, backgroundColor: "blue"}}>
-                        </div>
-                    </div>                    
-                        
-                        
-                    <div className="bar_div">
-                        <div className="bar_value">
-                            Reversed: {props.orientationCardData.reversed}%
-                        </div>
-                        <div className="bar_rep" style={{width: `${props.orientationCardData.reversed}%`, backgroundColor: "maroon"}}>
-                        </div>
-                    </div>                  
+
+                    <VictoryPie 
+                    innerRadius={75}
+                    colorScale={["darkgoldenrod", "black"]}
+                    data={orientationDataForPie}
+                    />
                         
                 </div>
             </div>
                 <div className="trend_block_explanation">
-                    <div className="trend_block_explanation_icon">{props.getIcon(props.orientationClass)}</div>
-                    <div className="trend_block_explanation_text">{props.getHighPercentageText(props.orientationClass)}</div>
+                    <div className="trend_block_explanation_text">{props.trendText}</div>
                 </div>
             </div>
     )

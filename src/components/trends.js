@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ArcanaTrend } from './arcanaTrend'
 import { OrientationTrend } from './orientationTrend'
 
 class Trends extends Component {
 
-    UNSAFE_componentWillMount(){
+    componentDidMount(){
         this.props.fetchUserArcana(this.props.user.id)
         this.props.fetchUserOrientations(this.props.user.id)
+        this.props.fetchHighUserArcana(this.props.user.id)
+        this.props.fetchHighUserOrientation(this.props.user.id)
         this.props.fetchAllArcana()
         this.props.fetchAllOrientations()
+        this.props.fetchHighArcanaForAllUsers()
+        this.props.fetchHighOrientationForAllUsers()
     }
 
     render (){
@@ -19,6 +22,10 @@ class Trends extends Component {
         const allArcanaMetrics = this.props.users.metrics.all_arcana
         const userOrientationMetrics = this.props.users.metrics.user_orientations
         const allOrientationMetrics = this.props.users.metrics.all_orientations
+        const highUserArcana = this.props.users.metrics.high_arcana
+        const highUserOrientation = this.props.users.metrics.high_orientation
+        const highArcanaForAllUsers = this.props.users.metrics.all_high_arcana
+        const highOrientationForAllUsers = this.props.users.metrics.all_high_orientation 
 
         const cardData = {
             arcanaData: {
@@ -49,30 +56,7 @@ class Trends extends Component {
             }
         }
 
-        const maxMinVal = (obj) => {
-            const sortedEntriesByVal = Object.entries(obj).sort(([, v1], [, v2]) => v1 - v2);
-          
-            return {
-              min: sortedEntriesByVal[0],
-              max: sortedEntriesByVal[sortedEntriesByVal.length - 1],
-              sortedObjByVal: sortedEntriesByVal.reduce((r, [k, v]) => ({ ...r, [k]: v }), {}),
-            };
-          };
-
-        const findHighestPercentage = (dataCategory) => {
-            const highestPercentageData = {
-                userArcana: maxMinVal(cardData.arcanaData.userArcana),
-                allArcana: maxMinVal(cardData.arcanaData.allArcana),
-                userOrientations: maxMinVal(cardData.orientationData.userOrientation),
-                allOrientations: maxMinVal(cardData.orientationData.allOrientations)
-            }
-            if (highestPercentageData[dataCategory].max[1] === 0) {
-                return "none"
-            }
-            return highestPercentageData[dataCategory].max[0]
-        }
-
-        const getHighPercentageText = (dataCategory) => {
+        const getHighPercentageText = (highArcanaOrOrientationValue) => {
             const highPercentageTextData = {
                 wands: "Mostly WANDS have been drawn.  Wands are the arcana of inspiration, intention, and ambition.  It could be that, lately, you've been feeling creative, inspired, spurred to action, and/or envisioning outcomes.",
                 swords: "Mostly SWORDS have been drawn.  Swords combine the emotion of cups and the intentionality of wands--they are the arcana of action.  Several swords in your readings might mean that there is a lot of commotion in your life as you move toward a final goal.",
@@ -83,21 +67,7 @@ class Trends extends Component {
                 reversed: "Most drawn cards are reversed.  Cards often have the opposite meaning when in the reversed orientation. They may contribute to a feeling that things aren't right or that you have a lack of clarity.  Most often, however, they are just a different perspective from which to interpret the path forward.",
                 none: "You haven't drawn any cards yet.  Check back here after you've completed a few readings to get your stats."
             }
-            return highPercentageTextData[findHighestPercentage(dataCategory)]
-        }
-
-        const getIcon = (dataCategory) => {
-            const iconData = {
-                wands: <img src={require ('../artwork/wands.jpeg')} alt="wands"/>,
-                swords: <img src={require ('../artwork/swords.jpeg')} alt="swords"/>,
-                cups: <img src={require ('../artwork/cups.jpeg')} alt="cups"/>,
-                pentacles: <img src={require ('../artwork/pentacles.jpeg')} alt="pentacles"/>,
-                major_arcana: <FontAwesomeIcon icon="crown" />,
-                upright: <FontAwesomeIcon icon="arrow-up" />, 
-                reversed: <FontAwesomeIcon icon="arrow-down" />
-            }
-            return iconData[findHighestPercentage(dataCategory)]
-
+            return highPercentageTextData[highArcanaOrOrientationValue]
         }
 
         return (
@@ -115,9 +85,7 @@ class Trends extends Component {
                         </div>
                         <ArcanaTrend 
                         arcanaCardData={cardData.arcanaData.userArcana}
-                        arcanaClass="userArcana"
-                        getIcon={getIcon}
-                        getHighPercentageText={getHighPercentageText}
+                        trendText = {getHighPercentageText(highUserArcana)}
                         /> 
                     </div>
 
@@ -127,9 +95,7 @@ class Trends extends Component {
                         </div>
                         <ArcanaTrend 
                         arcanaCardData={cardData.arcanaData.allArcana}
-                        arcanaClass="allArcana"
-                        getIcon={getIcon}
-                        getHighPercentageText={getHighPercentageText}
+                        trendText = {getHighPercentageText(highArcanaForAllUsers)}
                         /> 
                     </div> 
 
@@ -139,9 +105,7 @@ class Trends extends Component {
                         </div>
                         <OrientationTrend 
                         orientationCardData={cardData.orientationData.userOrientation}
-                        orientationClass="userOrientations"
-                        getIcon={getIcon}
-                        getHighPercentageText={getHighPercentageText}
+                        trendText = {getHighPercentageText(highUserOrientation)}
                         /> 
                     </div>
 
@@ -151,9 +115,7 @@ class Trends extends Component {
                         </div>
                         <OrientationTrend 
                         orientationCardData={cardData.orientationData.allOrientations}
-                        orientationClass="allOrientations"
-                        getIcon={getIcon}
-                        getHighPercentageText={getHighPercentageText}
+                        trendText = {getHighPercentageText(highOrientationForAllUsers)}
                         />   
                     </div>
 

@@ -6,9 +6,13 @@ export const users = (state = {
     user: null,
     metrics: {
         user_arcana: {},
+        high_arcana: {},
+        high_orientation: {},
         all_arcana: {},
+        all_high_arcana: {},
         user_orientations: {},
-        all_orientations: {}
+        all_orientations: {},
+        all_high_orientation: {}
     }
 }, action) => { 
     let user = typeof action.payload !== "undefined" ? action.payload.user : null
@@ -29,9 +33,13 @@ export const users = (state = {
         'LOG_OUT_USER': {...state, isLoggedIn: false, user: null},
         'LOADING_METRICS': {...state},
         'ADD_USER_ARCANA': {...state, metrics: {...state.metrics, user_arcana: action.payload}},
+        'ADD_HIGH_ARCANA': {...state, metrics: {...state.metrics, high_arcana: action.payload}},
+        'ADD_HIGH_ORIENTATION': {...state, metrics: {...state.metrics, high_orientation: action.payload}},
         'ADD_ALL_ARCANA': {...state, metrics: {...state.metrics, all_arcana: action.payload}},
+        'ADD_ALL_HIGH_ARCANA': {...state, metrics: {...state.metrics, all_high_arcana: action.payload}},
         'ADD_USER_ORIENTATIONS': {...state, metrics: {...state.metrics, user_orientations: action.payload}},
-        'ADD_ALL_ORIENTATIONS': {...state, metrics: {...state.metrics, all_orientations: action.payload}}
+        'ADD_ALL_ORIENTATIONS': {...state, metrics: {...state.metrics, all_orientations: action.payload}},
+        'ADD_ALL_HIGH_ORIENTATION': {...state, metrics: {...state.metrics, all_high_orientation: action.payload}}
     }
     return typeof storeStates[action.type] !== "undefined" ? storeStates[action.type] : state 
 }

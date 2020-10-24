@@ -5,7 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown} from '@fortawesome/free-solid-svg-icons'
 import { fetchCards } from './actions/cardActions'
 import { fetchReadings, postReading, deleteReading } from './actions/readingActions'
-import { fetchUserArcana, fetchAllArcana, fetchUserOrientations, fetchAllOrientations, loginUser, logoutUser, createUserAccount, deleteUserAccount, updateUserAccount } from './actions/userActions'
+import { fetchUserArcana, fetchAllArcana, fetchUserOrientations, fetchAllOrientations, loginUser, logoutUser, createUserAccount, deleteUserAccount, updateUserAccount, fetchHighUserArcana, fetchHighUserOrientation, fetchHighArcanaForAllUsers, fetchHighOrientationForAllUsers } from './actions/userActions'
 import LoginPage from './components/loginPage';
 import LoggedInWrapper from './components/loggedInWrapper'
 import LoginPageWrapper from './components/loginPageWrapper'
@@ -75,6 +75,8 @@ class App extends Component {
       this.props.fetchCards()
       this.props.fetchAllArcana()
       this.props.fetchAllOrientations()
+      this.props.fetchHighArcanaForAllUsers()
+      this.props.fetchHighOrientationForAllUsers()
     }
 
   componentDidUpdate(){
@@ -187,10 +189,14 @@ class App extends Component {
               user={this.props.user}
               fetchUserArcana = {this.props.fetchUserArcana}
               fetchUserOrientations = {this.props.fetchUserOrientations}
+              fetchHighUserArcana = {this.props.fetchHighUserArcana}
+              fetchHighUserOrientation = {this.props.fetchHighUserOrientation}
               fetchAllArcana = {this.props.fetchAllArcana}
               fetchAllOrientations = {this.props.fetchAllOrientations}
               allArcana = {this.props.metrics.all_arcana}
               allOrientations = {this.props.metrics.all_orientations}
+              fetchHighArcanaForAllUsers = {this.props.fetchHighArcanaForAllUsers}
+              fetchHighOrientationForAllUsers = {this.props.fetchHighOrientationForAllUsers}
               />           
             </LoggedInWrapper>         
           )}
@@ -260,9 +266,13 @@ const mapDispatchToProps = dispatch => ({
   postReading: readingObject => dispatch(postReading(readingObject)),
   deleteReading: readingObject => dispatch(deleteReading(readingObject)),
   fetchUserArcana: userId => dispatch(fetchUserArcana(userId)),
+  fetchHighUserArcana: userId => dispatch(fetchHighUserArcana(userId)),
+  fetchHighUserOrientation: userId => dispatch(fetchHighUserOrientation(userId)),
   fetchAllArcana: () => dispatch(fetchAllArcana()),
   fetchUserOrientations: userId => dispatch(fetchUserOrientations(userId)),
-  fetchAllOrientations: () => dispatch(fetchAllOrientations())
+  fetchAllOrientations: () => dispatch(fetchAllOrientations()),
+  fetchHighArcanaForAllUsers: () => dispatch(fetchHighArcanaForAllUsers()),
+  fetchHighOrientationForAllUsers: () => dispatch(fetchHighOrientationForAllUsers())
 })
 
 

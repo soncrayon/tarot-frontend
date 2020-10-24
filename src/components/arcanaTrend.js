@@ -1,61 +1,44 @@
 import React from 'react'
+import { VictoryPie } from 'victory';
 
 export const ArcanaTrend = (props) => {
+    
+    let arcanaDataForPie
+    
+    if (props.arcanaCardData.wands > 0 ||
+        props.arcanaCardData.sword > 0 ||
+        props.arcanaCardData.cups > 0 ||
+        props.arcanaCardData.pentacles > 0 ||
+        props.arcanaCardData.major_arcana > 0) {
+            arcanaDataForPie = [
+                {x: `Wands ${props.arcanaCardData.wands}%`, y: props.arcanaCardData.wands},
+                {x: `Swords ${props.arcanaCardData.swords}%`, y: props.arcanaCardData.swords},
+                {x: `Cups ${props.arcanaCardData.cups}%`, y: props.arcanaCardData.cups},
+                {x: `Pentacles ${props.arcanaCardData.pentacles}%`, y: props.arcanaCardData.pentacles},
+                {x: `Major Arcana ${props.arcanaCardData.major_arcana}%`, y: props.arcanaCardData.major_arcana}
+            ]
+    } else { 
+        arcanaDataForPie =[{
+            x: "No data for visualization yet. Go draw some cards!"
+        }]
+    }
+    
+    
     return (
         <div className="trend_block_data">
             <div className="trend_block_figures">
-                <div className="trend_block_figures_title"><h3>Arcana Percentages</h3></div>
                 <div className="trend_block_figures_key">
-                
-                    <div className="bar_div">
-                        <div className="bar_value">
-                            Wands: {props.arcanaCardData.wands}%
-                        </div>
-                        <div className="bar_rep" style={{width: `${props.arcanaCardData.wands}%`, backgroundColor: "blue"}}>
-                        </div>
-                    </div>                    
-                        
-                        
-                    <div className="bar_div">
-                        <div className="bar_value">
-                            Swords: {props.arcanaCardData.swords}%
-                        </div>
-                        <div className="bar_rep" style={{width: `${props.arcanaCardData.swords}%`, backgroundColor: "salmon"}}>
-                        </div>
-                    </div>                  
-                        
-                        
-                    <div className="bar_div">
-                        <div className="bar_value">
-                            Cups: {props.arcanaCardData.cups}%
-                        </div>
-                        <div className="bar_rep" style={{width: `${props.arcanaCardData.cups}%`, backgroundColor: "green"}}>
-                        </div>
-                    </div>                       
-                        
-                        
-                    <div className="bar_div">
-                        <div className="bar_value">
-                            Pentacles: {props.arcanaCardData.pentacles}%
-                        </div>
-                        <div className="bar_rep" style={{width: `${props.arcanaCardData.pentacles}%`, backgroundColor: "maroon"}}>
-                        </div>
-                    </div>        
-                        
-                        
-                    <div className="bar_div">
-                        <div className="bar_value">
-                            Major Arcana: {props.arcanaCardData.major_arcana}%
-                        </div>
-                        <div className="bar_rep" style={{width: `${props.arcanaCardData.major_arcana}%`, backgroundColor: "black"}}>
-                        </div>
-                    </div>
-                    
+
+                    <VictoryPie 
+                    innerRadius={75}
+                    colorScale={["maroon", "darkgreen", "darkblue", "darkgoldenrod", "black"]}
+                    data={arcanaDataForPie}
+                    />
+ 
                 </div>
             </div>
             <div className="trend_block_explanation">
-                <div className="trend_block_explanation_icon">{props.getIcon(props.arcanaClass)}</div>
-                <div className="trend_block_explanation_text">{props.getHighPercentageText(props.arcanaClass)}</div>
+                <div className="trend_block_explanation_text">{props.trendText}</div>
             </div>
         </div>
     )

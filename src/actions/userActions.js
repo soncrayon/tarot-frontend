@@ -112,6 +112,28 @@ export const fetchUserOrientations = (userId) => {
             })
     }
 }
+
+export const fetchHighUserArcana = (userId) => {
+    return (dispatch) => {
+        dispatch({type:'LOADING_METRICS'});
+        fetch(`http://localhost:3001/user_highest_arcana_percentage/${userId}`)
+            .then(resp => resp.json())
+            .then(resp => {
+                dispatch({type:'ADD_HIGH_ARCANA', payload: resp.highest})
+            })
+    }
+}
+
+export const fetchHighUserOrientation = (userId) => {
+    return (dispatch) => {
+        dispatch({type:'LOADING_METRICS'});
+        fetch(`http://localhost:3001/user_highest_orientation_percentage/${userId}`)
+            .then(resp => resp.json())
+            .then(resp => {
+                dispatch({type:'ADD_HIGH_ORIENTATION', payload: resp.highest})
+            })
+    }
+}
  
 
 export const fetchAllArcana = () => {
@@ -132,6 +154,30 @@ export const fetchAllOrientations = () => {
             .then(resp => resp.json())
             .then(resp => { 
                 dispatch({type:'ADD_ALL_ORIENTATIONS', payload: resp})
+            })
+    }
+}
+
+export const fetchHighArcanaForAllUsers = () => {
+    
+    return (dispatch) => {
+        dispatch({type:'LOADING_METRICS'});
+        fetch(`http://localhost:3001/all_highest_arcana_percentage`)
+            .then(resp => resp.json())
+            .then(resp => {
+                dispatch({type:'ADD_ALL_HIGH_ARCANA', payload: resp.highest})
+            })
+    }
+}
+
+
+export const fetchHighOrientationForAllUsers = () => {
+    return (dispatch) => {
+        dispatch({type:'LOADING_METRICS'});
+        fetch(`http://localhost:3001/all_highest_orientation_percentage`)
+            .then(resp => resp.json())
+            .then(resp => {
+                dispatch({type:'ADD_ALL_HIGH_ORIENTATION', payload: resp.highest})
             })
     }
 }

@@ -636,11 +636,10 @@ button.detailed_card_link:hover {
 
 .trend_block {
   height: 20%;
-  width: 70%; 
+  width: 80%; 
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 2%; 
   min-height: 28rem;
   margin-bottom: 2%;
   border-style: solid;
@@ -675,11 +674,10 @@ button.detailed_card_link:hover {
 
 .trend_block_figures {
   height: 100%;
-  width: 30%; 
+  width: 45%; 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 1%; 
 }
 
 .trend_block_figures_key {
@@ -688,6 +686,8 @@ button.detailed_card_link:hover {
   justify-content: space-around;
   height: 100%;
   width: 100%;
+  z-index: -2;
+  margin-left: 5%;
 }
 
 .trend_block_figures_graphic {
@@ -718,7 +718,7 @@ button.detailed_card_link:hover {
 
 .trend_block_explanation {
   height: 100%;
-  width: 70%; 
+  width: 55%; 
   display: flex;
   flex-direction: row;
   justify-content: space-around;

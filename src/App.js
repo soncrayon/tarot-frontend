@@ -212,6 +212,7 @@ class App extends Component {
               <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
                 <Trends
                   user={this.props.user}
+                  metricsLoading = {this.props.metricsLoading}
                   fetchUserArcana = {this.props.fetchUserArcana}
                   fetchUserOrientations = {this.props.fetchUserOrientations}
                   fetchHighUserArcana = {this.props.fetchHighUserArcana}
@@ -247,6 +248,7 @@ class App extends Component {
               <LoginPageWrapper>
                 <LoginPage 
                   loggedInStatus={this.props.isLoggedIn} 
+                  isUserLoggingIn={this.props.isLoggingIn}
                   errors={this.props.login_errors} 
                   fetchReadings={this.props.fetchReadings} 
                   loginUser={this.props.loginUser}
@@ -272,10 +274,12 @@ const mapStateToProps = state => {
     cards: state.cards,
     readings: state.readings,
     user: state.users.user, 
+    isLoggingIn: state.users.isLoggingIn,
     isLoggedIn: state.users.isLoggedIn,
     login_errors: state.users.login_errors,
     signup_errors: state.users.signup_errors,
     deleted: state.users.deleted,
+    metricsLoading: state.users.metricsLoading,
     metrics: state.users.metrics 
   }
 }

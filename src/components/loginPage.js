@@ -51,6 +51,16 @@ class LoginPage extends Component {
       return null   
     }
 
+    isUserLoggingIn = () => {
+      if (this.props.isUserLoggingIn) {
+        return (
+          <div>
+            <p>Logging you in.  One moment please...</p>
+          </div>
+        )
+      }
+    }
+
 
     redirectToApp = () => {
       if (this.props.loggedInStatus){
@@ -108,6 +118,7 @@ class LoginPage extends Component {
 
                   <div>
                       {this.handleErrors()}
+                      {this.isUserLoggingIn()}
                   </div>
                 </div>
 

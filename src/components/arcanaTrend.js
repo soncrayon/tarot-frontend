@@ -5,7 +5,7 @@ export const ArcanaTrend = (props) => {
 
     const populateArcanaPie = () => {
         let arcanaDataForPie = [{
-            x: "No data for visualization yet. Go draw some cards!"
+            x: "No data for visualization yet either because the data is still loading or because you don't have any readings."
         }]
         Object.entries(props.arcanaCardData).map((arcana_key, arcana_value) => {
             if (arcana_key[1] > 0) {

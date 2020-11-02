@@ -1,9 +1,11 @@
 export const users = (state = {
+    isLoggingIn: false,
     isLoggedIn: false,
     login_errors: null,
     signup_errors: null,
     deleted: false,
     user: null,
+    metricsLoading: false,
     metrics: {
         user_arcana: {},
         high_arcana: {},
@@ -26,20 +28,20 @@ export const users = (state = {
         'ACCOUNT_UPDATED': {...state, user: user},
         'DELETING_USER_ACCOUNT': {...state},
         'ACCOUNT_DELETED': {...state, isLoggedIn: false, user: null, deleted: true}, 
-        'LOGGING_IN_USER': {...state},
+        'LOGGING_IN_USER': {...state, isLoggingIn: true},
         'LOGGING_OUT_USER': {...state},
-        'LOGIN_SUCCESSFUL': {...state, isLoggedIn: true, login_errors: null, user: user},
+        'LOGIN_SUCCESSFUL': {...state, isLoggingIn: false, isLoggedIn: true, login_errors: null, user: user},
         'LOGIN_FAILED': {...state, isLoggedIn: false, login_errors: login_errors},
         'LOG_OUT_USER': {...state, isLoggedIn: false, user: null},
-        'LOADING_METRICS': {...state},
-        'ADD_USER_ARCANA': {...state, metrics: {...state.metrics, user_arcana: action.payload}},
-        'ADD_HIGH_ARCANA': {...state, metrics: {...state.metrics, high_arcana: action.payload}},
-        'ADD_HIGH_ORIENTATION': {...state, metrics: {...state.metrics, high_orientation: action.payload}},
-        'ADD_ALL_ARCANA': {...state, metrics: {...state.metrics, all_arcana: action.payload}},
-        'ADD_ALL_HIGH_ARCANA': {...state, metrics: {...state.metrics, all_high_arcana: action.payload}},
-        'ADD_USER_ORIENTATIONS': {...state, metrics: {...state.metrics, user_orientations: action.payload}},
-        'ADD_ALL_ORIENTATIONS': {...state, metrics: {...state.metrics, all_orientations: action.payload}},
-        'ADD_ALL_HIGH_ORIENTATION': {...state, metrics: {...state.metrics, all_high_orientation: action.payload}}
+        'LOADING_METRICS': {...state, metricsLoading: true},
+        'ADD_USER_ARCANA': {...state, metricsLoading: false, metrics: {...state.metrics, user_arcana: action.payload}},
+        'ADD_HIGH_ARCANA': {...state, metricsLoading: false, metrics: {...state.metrics, high_arcana: action.payload}},
+        'ADD_HIGH_ORIENTATION': {...state, metricsLoading: false, metrics: {...state.metrics, high_orientation: action.payload}},
+        'ADD_ALL_ARCANA': {...state, metricsLoading: false, metrics: {...state.metrics, all_arcana: action.payload}},
+        'ADD_ALL_HIGH_ARCANA': {...state, metricsLoading: false, metrics: {...state.metrics, all_high_arcana: action.payload}},
+        'ADD_USER_ORIENTATIONS': {...state, metricsLoading: false, metrics: {...state.metrics, user_orientations: action.payload}},
+        'ADD_ALL_ORIENTATIONS': {...state, metricsLoading: false, metrics: {...state.metrics, all_orientations: action.payload}},
+        'ADD_ALL_HIGH_ORIENTATION': {...state, metricsLoading: false, metrics: {...state.metrics, all_high_orientation: action.payload}}
     }
     return typeof storeStates[action.type] !== "undefined" ? storeStates[action.type] : state 
 }

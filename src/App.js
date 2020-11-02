@@ -72,10 +72,6 @@ class App extends Component {
  
   componentDidMount (){
       this.props.fetchCards()
-      this.props.fetchAllArcana()
-      this.props.fetchAllOrientations()
-      this.props.fetchHighArcanaForAllUsers()
-      this.props.fetchHighOrientationForAllUsers()
     }
 
   componentDidUpdate(){
@@ -201,6 +197,7 @@ class App extends Component {
                   user={this.props.user}
                   updateUserAfterAccountSettingsEdit = {this.updateUserAfterAccountSettingsEdit}
                   updateUserAccount = {this.props.updateUserAccount}
+                  errors={this.props.update_errors}
                 />           
               </LoggedInWrapper>
             )}
@@ -278,6 +275,7 @@ const mapStateToProps = state => {
     isLoggedIn: state.users.isLoggedIn,
     login_errors: state.users.login_errors,
     signup_errors: state.users.signup_errors,
+    update_errors: state.users.update_errors,
     deleted: state.users.deleted,
     metricsLoading: state.users.metricsLoading,
     metrics: state.users.metrics 

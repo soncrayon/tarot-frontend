@@ -13,7 +13,7 @@ export const OrientationTrend = (props) => {
             ]
     } else { 
         orientationDataForPie =[{
-            x: "No data for visualization yet. Go draw some cards!"
+            x: "No data for visualization yet."
         }]
     }
 

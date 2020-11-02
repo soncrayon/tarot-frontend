@@ -8,8 +8,7 @@ class Trends extends Component {
     constructor(){
         super()
         this.state = {
-            displayMetricsLoadingMessage: true, 
-            metricsLoadingMessage: "Loading metrics.  One moment please..."
+            metricsLoading: true, 
         }
     }
     
@@ -26,7 +25,7 @@ class Trends extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.metricsLoading !== this.props.metricsLoading) {
-            this.setState({...this.state, displayMetricsLoadingMessage: false})
+            this.setState({...this.state, metricsLoading: false})
         }
     }
 
@@ -79,12 +78,12 @@ class Trends extends Component {
                 major_arcana: "Mostly MAJOR ARCANA have been drawn.  The major arcana are the trump cards of the Tarot Deck, dealing with substantial life issues.  Take it as a sign that you need to pause and do some self-reflection.",
                 upright: "Most drawn cards are upright.  While there is no inherent meaning to this, you can take it as a sign that for now, status quo is an appealing option.",
                 reversed: "Most drawn cards are reversed.  Cards often have the opposite meaning when in the reversed orientation. They may contribute to a feeling that things aren't right or that you have a lack of clarity.  Most often, however, they are just a different perspective from which to interpret the path forward.",
-                none: "You haven't drawn any cards yet.  Check back here after you've completed a few readings to get your stats."
+                none: "You haven't drawn any cards yet (or the data is still loading).  Check back here after you've completed a few readings to get your stats."
             }
             if (highPercentageTextData[highArcanaOrOrientationValue]) {
                 return highPercentageTextData[highArcanaOrOrientationValue]
             }
-            return "No description yet either because the data is still loading or because you don't have any readings yet."
+            return highPercentageTextData['none']
         }
 
         return (
@@ -100,48 +99,47 @@ class Trends extends Component {
                         <div className="trend_block_title">
                             <h3>Your Arcana Metrics</h3>
                         </div>
-                        {this.props.metricsLoading ? this.state.metricsLoadingMessage : 
+                      
                             <ArcanaTrend 
                             arcanaCardData={cardData.arcanaData.userArcana}
                             trendText = {getHighPercentageText(highUserArcana)}
                             /> 
-                        }
                     </div>
 
                     <div className="trend_block">
                         <div className="trend_block_title">
                             <h3>Arcana Metrics for All Users</h3>
                         </div>
-                        {this.props.metricsLoading ? this.state.metricsLoadingMessage : 
+                      
                             <ArcanaTrend 
                             arcanaCardData={cardData.arcanaData.allArcana}
                             trendText = {getHighPercentageText(highArcanaForAllUsers)}
                             /> 
-                        }
+                        
                     </div> 
 
                     <div className="trend_block">
                         <div className="trend_block_title">
                             <h3>Your Orientation Metrics</h3>
                         </div>
-                        {this.props.metricsLoading ? this.state.metricsLoadingMessage : 
+                      
                             <OrientationTrend 
                             orientationCardData={cardData.orientationData.userOrientation}
                             trendText = {getHighPercentageText(highUserOrientation)}
                             /> 
-                        }
+                        
                     </div>
 
                     <div className="trend_block">
                         <div className="trend_block_title">
                             <h3>Orientation Metrics for All Users</h3>
                         </div>
-                        {this.props.metricsLoading ? this.state.metricsLoadingMessage : 
+                      
                             <OrientationTrend 
                             orientationCardData={cardData.orientationData.allOrientations}
                             trendText = {getHighPercentageText(highOrientationForAllUsers)}
                             />   
-                        }
+                        
                     </div>
 
                 </div>

@@ -3,6 +3,7 @@ export const users = (state = {
     isLoggedIn: false,
     login_errors: null,
     signup_errors: null,
+    update_errors: null,
     deleted: false,
     user: null,
     metricsLoading: false,
@@ -20,16 +21,18 @@ export const users = (state = {
     let user = typeof action.payload !== "undefined" ? action.payload.user : null
     let login_errors = typeof action.payload !== "undefined" ? action.payload.login_errors : null
     let signup_errors = typeof action.payload !== "undefined" ? action.payload.signup_errors : null
+    let update_errors = typeof action.payload !== "undefined" ? action.payload.update_errors : null
     const storeStates = {
-        'CREATING_USER_ACCOUNT': {...state},
+        'CREATING_USER_ACCOUNT': state,
         'ACCOUNT_CREATED': {...state, isLoggedIn: true, signup_errors: null, user: user},
         'ACCOUNT_CREATION_FAILED': {...state, signup_errors: signup_errors, user: null},
-        'UPDATING_USER_ACCOUNT': {...state},
-        'ACCOUNT_UPDATED': {...state, user: user},
-        'DELETING_USER_ACCOUNT': {...state},
+        'UPDATING_USER_ACCOUNT': state,
+        'ACCOUNT_UPDATED': {...state, update_errors: null, user: user},
+        'ACCOUNT_UPDATE_FAILED': {...state, update_errors: update_errors},
+        'DELETING_USER_ACCOUNT': state,
         'ACCOUNT_DELETED': {...state, isLoggedIn: false, user: null, deleted: true}, 
         'LOGGING_IN_USER': {...state, isLoggingIn: true},
-        'LOGGING_OUT_USER': {...state},
+        'LOGGING_OUT_USER': state,
         'LOGIN_SUCCESSFUL': {...state, isLoggingIn: false, isLoggedIn: true, login_errors: null, user: user},
         'LOGIN_FAILED': {...state, isLoggedIn: false, login_errors: login_errors},
         'LOG_OUT_USER': {...state, isLoggedIn: false, user: null},

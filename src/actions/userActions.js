@@ -6,8 +6,7 @@ export const loginUser = (user) => {
             body: JSON.stringify({user}),
             headers:{
                 'Content-Type':'application/json'
-            },
-            withCredentials: true
+                }
             })
             .then(resp => resp.json())
             .then(resp => {
@@ -23,8 +22,7 @@ export const logoutUser = () => {
     return(dispatch) => {
         dispatch({type: 'LOGGING_OUT_USER'});
         fetch('http://localhost:3001/logout', {
-            method: 'DELETE',
-            withCredentials: true
+            method: 'DELETE'
         })
             .then(() => {return dispatch({type: 'LOG_OUT_USER'})})
     }
@@ -62,7 +60,10 @@ export const updateUserAccount = (user) => {
         })
         .then(resp => resp.json())
         .then(resp => {
-            return dispatch({type: 'ACCOUNT_UPDATED', payload: resp})
+            if (resp.status === 'updated') {
+                return dispatch({type: 'ACCOUNT_UPDATED', payload: resp})
+            }
+            return dispatch({type: 'ACCOUNT_UPDATE_FAILED', payload: resp})
         })
     }
 }
@@ -72,8 +73,7 @@ export const deleteUserAccount = (userId) => {
         dispatch({type: 'DELETING_USER_ACCOUNT'});
 
         fetch('http://localhost:3001/logout', {
-            method: 'DELETE',
-            withCredentials: true
+            method: 'DELETE'
         })
             .then(() => {
 

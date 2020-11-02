@@ -17,7 +17,7 @@ class CardDescriptionLists extends Component {
         this.setState({
             view: {position: "fixed"},
             showDetailedCard: true,
-            cardToShow: cardToShow
+            cardToShow
         })
     }
 

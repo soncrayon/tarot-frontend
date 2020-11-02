@@ -14,7 +14,7 @@ class UserReadings extends Component {
         this.setState({
             view: {position: "fixed"},
             showFullReading: true, 
-            readingToShow: readingToShow
+            readingToShow
         })
     }
 
@@ -30,12 +30,6 @@ class UserReadings extends Component {
         this.props.fetchReadings(this.props.user.id)
       }
 
-    componentDidUpdate(prevProps){
-        if(prevProps.readings.length !== this.props.readings.length){
-            this.props.fetchReadings(this.props.user.id)
-        }
-    }
-
     render(){
         return (
             <div className="user_readings_component" style={this.state.view}>
@@ -50,12 +44,11 @@ class UserReadings extends Component {
                 </div>
                 
                 {this.state.showFullReading ? <FullReadingModal 
-                user={this.props.user}
-                reading={this.state.readingToShow} 
-                fetchReadings={this.props.fetchReadings}
-                closeFullReading={this.closeFullReading} 
-                deleteReading={this.props.deleteReading}
-                deleteCard={this.props.deleteCard}
+                    user={this.props.user}
+                    reading={this.state.readingToShow} 
+                    fetchReadings={this.props.fetchReadings}
+                    closeFullReading={this.closeFullReading} 
+                    deleteReading={this.props.deleteReading}
                 /> : null }
 
             </div>

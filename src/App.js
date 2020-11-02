@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown} from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCaretDown, faCaretUp, faTimes} from '@fortawesome/free-solid-svg-icons'
 import { fetchCards } from './actions/cardActions'
 import { fetchReadings, postReading, deleteReading } from './actions/readingActions'
 import { fetchUserArcana, fetchAllArcana, fetchUserOrientations, fetchAllOrientations, loginUser, logoutUser, createUserAccount, deleteUserAccount, updateUserAccount, fetchHighUserArcana, fetchHighUserOrientation, fetchHighArcanaForAllUsers, fetchHighOrientationForAllUsers } from './actions/userActions'
@@ -10,7 +10,6 @@ import LoginPage from './components/loginPage';
 import LoggedInWrapper from './components/loggedInWrapper'
 import LoginPageWrapper from './components/loginPageWrapper'
 import Signup from './components/signupPage'
-import { AppTitle } from './components/appTitle'
 import Home from './components/home'
 import UserReadings from './components/userReadings'
 import CardDescriptionLists from './components/cardDescriptionLists';
@@ -19,7 +18,7 @@ import UserAccountMenu from './components/userAccountMenu'
 import Trends from './components/trends'
 import AccountSettings from './components/accountSettings'
 
-library.add(faBars, faCaretDown, faCaretUp, faTimes, faStar, faSlash, faTrophy, faLocationArrow, faCrown, faArrowUp, faArrowDown)
+library.add(faBars, faCaretDown, faCaretUp, faTimes)
 
 class App extends Component {   
 
@@ -97,14 +96,32 @@ class App extends Component {
 
         <div className="app_nav">
 
-          <AppTitle />
+          <div className="app_title"> 
+            <p>ORI TAROT</p>
+          </div>  
 
           <div className="menu_container">
-            <div className="nav_item"> <Link to="/home">HOME</Link> </div>
-            <div className="nav_item"> <Link to="/user_readings">YOUR READINGS</Link> </div>
-            <div className="nav_item"> <Link to="/card_descriptions">CARD DESCRIPTIONS</Link></div>
-            <div className="nav_item"> <Link to="/about">ABOUT</Link> </div>
-            <div className="nav_item"> <Link to="/" onClick={() => this.logOutAndClear()}>LOGOUT</Link> </div>
+
+            <div className="nav_item"> 
+              <Link to="/home">HOME</Link> 
+            </div>
+
+            <div className="nav_item"> 
+              <Link to="/user_readings">YOUR READINGS</Link> 
+            </div>
+
+            <div className="nav_item"> 
+              <Link to="/card_descriptions">CARD DESCRIPTIONS</Link>
+            </div>
+
+            <div className="nav_item"> 
+              <Link to="/about">ABOUT</Link> 
+            </div>
+
+            <div className="nav_item"> 
+              <Link to="/" onClick={() => this.logOutAndClear()}>LOGOUT</Link> 
+            </div>
+
           </div>
 
           {this.props.user ? <UserAccountMenu user={this.props.user} toggleUserAccountMenu={this.toggleUserAccountMenu}/> : null} 
@@ -112,123 +129,131 @@ class App extends Component {
         </div>
 
         <div className="user_account_menu_options" style={this.state.user_account_menu_display}>
-            <div><Link to="/trends" onClick={() => this.toggleUserAccountMenu()}>YOUR TRENDS</Link></div>
-            <div><Link to="/account_settings" onClick={() => this.toggleUserAccountMenu()}>ACCOUNT SETTINGS</Link></div>
+
+            <div>
+              <Link to="/trends" onClick={() => this.toggleUserAccountMenu()}>YOUR TRENDS</Link>
+            </div>
+
+            <div>
+              <Link to="/account_settings" onClick={() => this.toggleUserAccountMenu()}>ACCOUNT SETTINGS</Link>
+            </div>
+
             {this.props.user ?   <div><Link to="#" onClick={() => this.deleteAndClear(this.props.user.id)}>DELETE ACCOUNT</Link></div> : null}
+
         </div>
       
         
         <Switch>
     
           <Route
-          path='/about'
-          render={(props) => (
-            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <About {...props} />           
-            </LoggedInWrapper>
-          )}
+            path='/about'
+            render={() => (
+              <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+                <About />           
+              </LoggedInWrapper>
+            )}
           />
 
           <Route
-          path='/card_descriptions'
-          render={(props) => (
-            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <CardDescriptionLists {...props} cards={this.props.cards} />           
-            </LoggedInWrapper>
-          )}
+            path='/card_descriptions'
+            render={() => (
+              <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+                <CardDescriptionLists 
+                  cards={this.props.cards} 
+                />           
+              </LoggedInWrapper>
+            )}
           />
           
           <Route
-          path='/home'
-          render={(props) => (
-            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <Home 
-                {...props}
-                user={this.props.user}
-                cards={this.props.cards} 
-                postReading={this.props.postReading} 
-                fetchReadings ={this.props.fetchReadings}
-              />
-            </LoggedInWrapper>
-          )}
+            path='/home'
+            render={() => (
+              <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+                <Home 
+                  user={this.props.user}
+                  cards={this.props.cards} 
+                  postReading={this.props.postReading} 
+                  fetchReadings ={this.props.fetchReadings}
+                />
+              </LoggedInWrapper>
+            )}
           />
           
           <Route
-          path='/user_readings'
-          render={(props) => (
-            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <UserReadings 
-              {...props} 
-              user={this.props.user} 
-              readings={this.props.readings} 
-              fetchReadings={this.props.fetchReadings} 
-              deleteReading={this.props.deleteReading} 
-              />
-            </LoggedInWrapper>
-          )}
+            path='/user_readings'
+            render={() => (
+              <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+                <UserReadings 
+                  user={this.props.user} 
+                  readings={this.props.readings} 
+                  fetchReadings={this.props.fetchReadings} 
+                  deleteReading={this.props.deleteReading} 
+                />
+              </LoggedInWrapper>
+            )}
           />
 
           <Route
-          path='/account_settings'
-          render={(props) => (
-            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <AccountSettings {...props} 
-              user={this.props.user}
-              updateUserAfterAccountSettingsEdit = {this.updateUserAfterAccountSettingsEdit}
-              updateUserAccount = {this.props.updateUserAccount}
-              />           
-            </LoggedInWrapper>
-          )}
+            path='/account_settings'
+            render={() => (
+              <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+                <AccountSettings
+                  user={this.props.user}
+                  updateUserAfterAccountSettingsEdit = {this.updateUserAfterAccountSettingsEdit}
+                  updateUserAccount = {this.props.updateUserAccount}
+                />           
+              </LoggedInWrapper>
+            )}
           />
 
           <Route
-          path='/trends'
-          render={(props) => (
-            <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
-              <Trends {...props} 
-              user={this.props.user}
-              fetchUserArcana = {this.props.fetchUserArcana}
-              fetchUserOrientations = {this.props.fetchUserOrientations}
-              fetchHighUserArcana = {this.props.fetchHighUserArcana}
-              fetchHighUserOrientation = {this.props.fetchHighUserOrientation}
-              fetchAllArcana = {this.props.fetchAllArcana}
-              fetchAllOrientations = {this.props.fetchAllOrientations}
-              allArcana = {this.props.metrics.all_arcana}
-              allOrientations = {this.props.metrics.all_orientations}
-              fetchHighArcanaForAllUsers = {this.props.fetchHighArcanaForAllUsers}
-              fetchHighOrientationForAllUsers = {this.props.fetchHighOrientationForAllUsers}
-              />           
-            </LoggedInWrapper>         
-          )}
+            path='/trends'
+            render={() => (
+              <LoggedInWrapper loggedInStatus={this.props.isLoggedIn}>
+                <Trends
+                  user={this.props.user}
+                  fetchUserArcana = {this.props.fetchUserArcana}
+                  fetchUserOrientations = {this.props.fetchUserOrientations}
+                  fetchHighUserArcana = {this.props.fetchHighUserArcana}
+                  fetchHighUserOrientation = {this.props.fetchHighUserOrientation}
+                  fetchAllArcana = {this.props.fetchAllArcana}
+                  fetchAllOrientations = {this.props.fetchAllOrientations}
+                  allArcana = {this.props.metrics.all_arcana}
+                  allOrientations = {this.props.metrics.all_orientations}
+                  fetchHighArcanaForAllUsers = {this.props.fetchHighArcanaForAllUsers}
+                  fetchHighOrientationForAllUsers = {this.props.fetchHighOrientationForAllUsers}
+                />           
+              </LoggedInWrapper>         
+            )}
           />
           
           <Route
-          path='/create_account'
-          render={(props) => (
-            <LoginPageWrapper {...props}>
-              <Signup {...props} 
-              createUserAccount={this.props.createUserAccount}
-              user={this.props.user}
-              errors={this.props.signup_errors}
-              loggedInStatus={this.props.isLoggedIn}
-              />
-            </LoginPageWrapper>
-          )}
+            path='/create_account'
+            render={() => (
+              <LoginPageWrapper>
+                <Signup 
+                  createUserAccount={this.props.createUserAccount}
+                  user={this.props.user}
+                  errors={this.props.signup_errors}
+                  loggedInStatus={this.props.isLoggedIn}
+                />
+              </LoginPageWrapper>
+            )}
           />
 
           <Route
-          path='/'
-          render={(props) => (
-            <LoginPageWrapper {...props}>
-              <LoginPage {...props} 
-              loggedInStatus={this.props.isLoggedIn} 
-              user={this.props.user} 
-              errors={this.props.login_errors} 
-              fetchReadings={this.props.fetchReadings} 
-              loginUser={this.props.loginUser}/>
-            </LoginPageWrapper>
-          
-          )}
+            path='/'
+            render={() => (
+              <LoginPageWrapper>
+                <LoginPage 
+                  loggedInStatus={this.props.isLoggedIn} 
+                  errors={this.props.login_errors} 
+                  fetchReadings={this.props.fetchReadings} 
+                  loginUser={this.props.loginUser}
+                />
+              </LoginPageWrapper>
+            
+            )}
           />
 
         </Switch>

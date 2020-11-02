@@ -3,14 +3,6 @@ import { withRouter } from 'react-router-dom'
 
 class LoginPageWrapper extends Component {
     
-    redirectToApp = () => {
-        this.props.history.push('/home')
-    }
-    
-    UNSAFE_componentWillMount() {
-        return this.props.loggedInStatus ? this.redirectToApp() : null
-    }
-
     componentDidMount(){
         document.querySelector('.app_nav').style.display = "none";
     }
@@ -27,5 +19,6 @@ class LoginPageWrapper extends Component {
         ) 
     }
 }
+
 
 export default withRouter(LoginPageWrapper)  

@@ -2,28 +2,27 @@ import React from 'react'
 import { VictoryPie } from 'victory';
 
 export const ArcanaTrend = (props) => {
-    
-    let arcanaDataForPie
-    
-    if (props.arcanaCardData.wands > 0 ||
-        props.arcanaCardData.sword > 0 ||
-        props.arcanaCardData.cups > 0 ||
-        props.arcanaCardData.pentacles > 0 ||
-        props.arcanaCardData.major_arcana > 0) {
-            arcanaDataForPie = [
-                {x: `Wands ${props.arcanaCardData.wands}%`, y: props.arcanaCardData.wands},
-                {x: `Swords ${props.arcanaCardData.swords}%`, y: props.arcanaCardData.swords},
-                {x: `Cups ${props.arcanaCardData.cups}%`, y: props.arcanaCardData.cups},
-                {x: `Pentacles ${props.arcanaCardData.pentacles}%`, y: props.arcanaCardData.pentacles},
-                {x: `Major Arcana ${props.arcanaCardData.major_arcana}%`, y: props.arcanaCardData.major_arcana}
-            ]
-    } else { 
-        arcanaDataForPie =[{
+
+    const populateArcanaPie = () => {
+        let arcanaDataForPie = [{
             x: "No data for visualization yet. Go draw some cards!"
         }]
+        Object.entries(props.arcanaCardData).map((arcana_key, arcana_value) => {
+            if (arcana_key[1] > 0) {
+                    arcanaDataForPie.push({x: `${arcana_key[0].charAt(0).toUpperCase() + arcana_key[0].slice(1)} ${arcana_key[1]}%`, y: arcana_key[1]})
+            }
+            return arcanaDataForPie
+        })
+        return nixDefaultLanguage(arcanaDataForPie)
     }
-    
-    
+
+   const nixDefaultLanguage = (arcanaDataForPie) => {
+        if (arcanaDataForPie.length > 1) {
+            arcanaDataForPie.shift()
+        }
+        return arcanaDataForPie
+   }
+               
     return (
         <div className="trend_block_data">
             <div className="trend_block_figures">
@@ -32,7 +31,7 @@ export const ArcanaTrend = (props) => {
                     <VictoryPie 
                     innerRadius={75}
                     colorScale={["maroon", "darkgreen", "darkblue", "darkgoldenrod", "black"]}
-                    data={arcanaDataForPie}
+                    data={populateArcanaPie()}
                     />
  
                 </div>

@@ -34,7 +34,7 @@ html, body {
 }
 
 .credential_background::after {
-  background-image: url('./artwork/theme_background.jpg');
+  background-image: url(./artwork/theme_background.jpg);
   content: ' ';
   display: block;
   position: absolute;

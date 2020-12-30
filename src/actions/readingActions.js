@@ -1,7 +1,7 @@
 export const postReading = (readingObj) => { 
     return (dispatch) => {
         dispatch({type:'SAVING_READING'});
-        fetch('http://localhost:3001/readings', {
+        fetch('https://ori-tarot-api.herokuapp.com/readings', {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json'
@@ -11,7 +11,7 @@ export const postReading = (readingObj) => {
         .then(resp => resp.json())
         .then(resp => {
             let updatedReadingObj = Object.assign({}, readingObj, {reading_id: resp.id})
-            fetch('http://localhost:3001/cards', {
+            fetch('https://ori-tarot-api.herokuapp.com/cards', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -29,7 +29,7 @@ export const postReading = (readingObj) => {
 export const deleteReading = (reading) => { 
     return (dispatch) => {
         dispatch({type: 'DELETING_READING'});
-            fetch(`http://localhost:3001/readings/${reading.id}`, {
+            fetch(`https://ori-tarot-api.herokuapp.com/readings/${reading.id}`, {
                 method: 'DELETE'
             })
             .then(resp => resp.json())
@@ -42,7 +42,7 @@ export const deleteReading = (reading) => {
 export const fetchReadings = (userId) => {
     return (dispatch) => {
         dispatch({type:'LOADING_READINGS'});
-        fetch(`http://localhost:3001/loggedin_user_readings/${userId}`)
+        fetch(`https://ori-tarot-api.herokuapp.com/loggedin_user_readings/${userId}`)
             .then(resp => resp.json())
             .then(resp => {
                 dispatch({type:'ADD_READINGS', payload: resp})

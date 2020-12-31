@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/ori-tarot/static/css/main.b5bb95fe.chunk.css",
-    "main.js": "/ori-tarot/static/js/main.603d8f07.chunk.js",
-    "main.js.map": "/ori-tarot/static/js/main.603d8f07.chunk.js.map",
-    "runtime-main.js": "/ori-tarot/static/js/runtime-main.e2e49dea.js",
-    "runtime-main.js.map": "/ori-tarot/static/js/runtime-main.e2e49dea.js.map",
-    "static/js/2.0c030318.chunk.js": "/ori-tarot/static/js/2.0c030318.chunk.js",
-    "static/js/2.0c030318.chunk.js.map": "/ori-tarot/static/js/2.0c030318.chunk.js.map",
-    "index.html": "/ori-tarot/index.html",
-    "precache-manifest.8bb2d1f37a96978b5d23690fb5ad09e0.js": "/ori-tarot/precache-manifest.8bb2d1f37a96978b5d23690fb5ad09e0.js",
-    "service-worker.js": "/ori-tarot/service-worker.js",
-    "static/css/main.b5bb95fe.chunk.css.map": "/ori-tarot/static/css/main.b5bb95fe.chunk.css.map",
-    "static/js/2.0c030318.chunk.js.LICENSE.txt": "/ori-tarot/static/js/2.0c030318.chunk.js.LICENSE.txt",
-    "static/media/card_back.jpeg": "/ori-tarot/static/media/card_back.9f14152e.jpeg",
-    "static/media/App.css": "/ori-tarot/static/media/theme_background.2624d50e.jpg"
+    "main.css": "/tarot-frontend/static/css/main.52894713.chunk.css",
+    "main.js": "/tarot-frontend/static/js/main.8f252420.chunk.js",
+    "main.js.map": "/tarot-frontend/static/js/main.8f252420.chunk.js.map",
+    "runtime-main.js": "/tarot-frontend/static/js/runtime-main.04c74778.js",
+    "runtime-main.js.map": "/tarot-frontend/static/js/runtime-main.04c74778.js.map",
+    "static/js/2.0c030318.chunk.js": "/tarot-frontend/static/js/2.0c030318.chunk.js",
+    "static/js/2.0c030318.chunk.js.map": "/tarot-frontend/static/js/2.0c030318.chunk.js.map",
+    "index.html": "/tarot-frontend/index.html",
+    "precache-manifest.50f02ed6b519974f51b2b7258b394e8a.js": "/tarot-frontend/precache-manifest.50f02ed6b519974f51b2b7258b394e8a.js",
+    "service-worker.js": "/tarot-frontend/service-worker.js",
+    "static/css/main.52894713.chunk.css.map": "/tarot-frontend/static/css/main.52894713.chunk.css.map",
+    "static/js/2.0c030318.chunk.js.LICENSE.txt": "/tarot-frontend/static/js/2.0c030318.chunk.js.LICENSE.txt",
+    "static/media/card_back.jpeg": "/tarot-frontend/static/media/card_back.9f14152e.jpeg",
+    "static/media/App.css": "/tarot-frontend/static/media/theme_background.2624d50e.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e2e49dea.js",
+    "static/js/runtime-main.04c74778.js",
     "static/js/2.0c030318.chunk.js",
-    "static/css/main.b5bb95fe.chunk.css",
-    "static/js/main.603d8f07.chunk.js"
+    "static/css/main.52894713.chunk.css",
+    "static/js/main.8f252420.chunk.js"
   ]
 }
